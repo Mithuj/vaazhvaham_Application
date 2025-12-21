@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { Calendar, Heart, BookOpen, Users } from "lucide-react"
+import { Calendar, Heart, BookOpen, Users, Clock, MapPin } from "lucide-react"
 import { useState } from "react"
 
 export default function HomePage() {
@@ -12,18 +12,42 @@ export default function HomePage() {
   const upcomingEvents = [
     {
       date: "Thu Sep 11 2025",
+      time: "10:00 AM",
       title:
         language === "en"
           ? "Dr. Annaladsumy Sinnaththamby memorial day and sermon – 2025"
           : "டாக்டர் அன்னலட்சுமி சின்னத்தம்பி நினைவு நாள் மற்றும் பிரசங்கம் – 2025",
+      location: language === "en" ? "Vaazhvaham Main Hall" : "வாழ்வஹம் பிரதான மண்டபம்",
     },
     {
       date: "Sat Aug 15 2025",
+      time: "9:00 AM",
       title: language === "en" ? "Independence Day Celebration" : "சுதந்திர தின கொண்டாட்டம்",
+      location: language === "en" ? "Vaazhvaham Campus" : "வாழ்வஹம் வளாகம்",
     },
     {
       date: "Mon Jul 21 2025",
+      time: "2:00 PM",
       title: language === "en" ? "Annual General Meeting" : "ஆண்டு பொதுக் கூட்டம்",
+      location: language === "en" ? "Conference Room" : "மாநாட்டு அறை",
+    },
+    {
+      date: "Fri Jun 27 2025",
+      time: "11:00 AM",
+      title: language === "en" ? "Vocational Training Graduation Ceremony" : "தொழிற்பயிற்சி பட்டமளிப்பு விழா",
+      location: language === "en" ? "Vaazhvaham Main Hall" : "வாழ்வஹம் பிரதான மண்டபம்",
+    },
+    {
+      date: "Wed May 14 2025",
+      time: "3:00 PM",
+      title: language === "en" ? "Community Sports Day" : "சமூக விளையாட்டு நாள்",
+      location: language === "en" ? "Sports Ground" : "விளையாட்டு மைதானம்",
+    },
+    {
+      date: "Sat Apr 26 2025",
+      time: "10:00 AM",
+      title: language === "en" ? "Spring Festival & Cultural Program" : "வசந்த திருவிழா & கலாச்சார நிகழ்ச்சி",
+      location: language === "en" ? "Outdoor Stage" : "வெளிப்புற மேடை",
     },
   ]
 
@@ -166,7 +190,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="mb-12 text-center">
             <h2 className="mb-4 text-3xl font-bold tracking-tight md:text-4xl">
-              {language === "en" ? "Our Events" : "எங்கள் நிகழ்வுகள்"}
+              {language === "en" ? "Upcoming Events" : "வரவிருக்கும் நிகழ்வுகள்"}
             </h2>
             <p className="text-muted-foreground">
               {language === "en"
@@ -175,24 +199,58 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mx-auto max-w-3xl space-y-4">
-            {upcomingEvents.map((event, index) => (
-              <Card key={index} className="transition-shadow hover:shadow-md">
-                <CardContent className="flex items-start gap-4 p-6">
-                  <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                    <Calendar className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="mb-2 text-sm font-medium text-primary">{event.date}</p>
-                    <h3 className="text-lg font-semibold leading-relaxed">{event.title}</h3>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="mx-auto max-w-4xl">
+            <div className="relative overflow-hidden rounded-lg bg-white shadow-lg" style={{ height: '500px' }}>
+              <style jsx>{`
+                @keyframes scrollUp {
+                  0% {
+                    transform: translateY(0);
+                  }
+                  100% {
+                    transform: translateY(-50%);
+                  }
+                }
+                .animate-scroll {
+                  animation: scrollUp 30s linear infinite;
+                }
+                .animate-scroll:hover {
+                  animation-play-state: paused;
+                }
+              `}</style>
+              
+              <div className="animate-scroll">
+                {/* Duplicate events for seamless loop */}
+                {[...upcomingEvents, ...upcomingEvents].map((event, index) => (
+                  <Card key={index} className="m-4 transition-all hover:shadow-xl border-l-4 border-l-primary">
+                    <CardContent className="p-6">
+                      <div className="flex items-start gap-4">
+                        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                          <Calendar className="h-7 w-7 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="mb-2 text-sm font-semibold text-primary">{event.date}</p>
+                          <h3 className="text-lg font-bold leading-snug mb-2">{event.title}</h3>
+                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <Clock className="h-4 w-4" />
+                              {event.time}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <MapPin className="h-4 w-4" />
+                              {event.location}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="mt-8 text-center">
-            <Button variant="outline" asChild>
+            <Button variant="default" size="lg" asChild>
               <Link href="/events">{language === "en" ? "View All Events" : "அனைத்து நிகழ்வுகளையும் காண்க"}</Link>
             </Button>
           </div>
