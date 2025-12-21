@@ -88,58 +88,74 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mission Statement */}
-      <section className="py-16 md:py-20">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto max-w-4xl">
-            <div className="grid gap-8 md:grid-cols-3">
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10">
-                    <BookOpen className="h-8 w-8 text-primary" />
-                  </div>
-                  <CardTitle>{language === "en" ? "Education" : "கல்வி"}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {language === "en"
-                      ? "Providing quality education and skill development programs tailored for visually impaired students."
-                      : "பார்வையற்ற மாணவர்களுக்கு தனிப்பயனாக்கப்பட்ட தரமான கல்வி மற்றும் திறன் மேம்பாட்டு திட்டங்களை வழங்குதல்."}
-                  </p>
-                </CardContent>
-              </Card>
+      {/* Our Mission and Vision Section */}
+      <section className="py-0">
+        <div className="container mx-auto px-0">
+          <div className="grid md:grid-cols-2">
+            {/* Our Mission */}
+            <div className="bg-gray-50 py-16 px-8 md:px-12">
+              <h2 className="mb-8 text-4xl font-bold text-[#1e3a8a] text-center">
+                {language === "en" ? "OUR MISSION" : "எங்கள் நோக்கம்"}
+              </h2>
+              <p className="text-base text-gray-700 leading-relaxed text-justify">
+                {language === "en"
+                  ? "To prepare the visually handicapped to pave the way for living with good qualities using available resources to have equal opportunities and rights like others have by getting purity of mind and realizing themselves completely through education."
+                  : "கல்வியின் மூலம் மனத்தூய்மையைப் பெறுவதன் மூலமும், தங்களை முழுமையாக உணர்ந்து கொள்வதன் மூலமும், இருக்கும் வளங்களைப் பயன்படுத்தி நல்ல பண்புகளுடன் வாழ்வதற்கான வழியைத் திறக்க பார்வையற்றோரைத் தயார்படுத்துவது."}
+              </p>
+            </div>
 
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent/10">
-                    <Heart className="h-8 w-8 text-accent" />
-                  </div>
-                  <CardTitle>{language === "en" ? "Care" : "பராமரிப்பு"}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {language === "en"
-                      ? "Offering comprehensive care, support, and a nurturing environment for all residents."
-                      : "அனைத்து குடியிருப்பாளர்களுக்கும் விரிவான பராமரிப்பு, ஆதரவு மற்றும் வளர்க்கும் சூழலை வழங்குதல்."}
-                  </p>
-                </CardContent>
-              </Card>
+            {/* Motto with Image */}
+            <div 
+              className="relative bg-cover bg-center py-16 px-8 md:px-12 flex items-center justify-center"
+              style={{
+                backgroundImage: "url('/motto-bg.jpg')",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black/30"></div>
+              <div className="relative z-10 text-white text-center">
+                <h2 className="mb-6 text-5xl font-bold drop-shadow-lg">
+                  {language === "en" ? "Motto" : "குறிக்கோள்"}
+                </h2>
+                <p className="text-2xl font-medium drop-shadow-lg">
+                  {language === "en" 
+                    ? "Education is light. Education is path."
+                    : "கல்வி ஒளி. கல்வி பாதை."}
+                </p>
+              </div>
+            </div>
 
-              <Card className="text-center">
-                <CardHeader>
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary/10">
-                    <Users className="h-8 w-8 text-secondary" />
-                  </div>
-                  <CardTitle>{language === "en" ? "Community" : "சமூகம்"}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {language === "en"
-                      ? "Building an inclusive community where everyone is valued, respected, and empowered."
-                      : "அனைவரும் மதிக்கப்பட்டு, மரியாதைக்குரியவர்களாகவும், அதிகாரமளிக்கப்பட்டவர்களாகவும் இருக்கும் ஒரு உள்ளடக்கிய சமூகத்தை உருவாக்குதல்."}
-                  </p>
-                </CardContent>
-              </Card>
+            {/* Our Vision */}
+            <div className="bg-[#1e3a8a] py-16 px-8 md:px-12 text-white">
+              <h2 className="mb-8 text-4xl font-bold text-center">
+                {language === "en" ? "OUR VISION" : "எங்கள் தொலைநோக்கு"}
+              </h2>
+              <p className="text-base leading-relaxed text-justify">
+                {language === "en"
+                  ? "To empower the visually handicapped to develop the potential balanced personality with knowledge and efficiency for facing the challenging life through Education."
+                  : "கல்வியின் மூலம் சவாலான வாழ்க்கையை எதிர்கொள்ள அறிவு மற்றும் திறமையுடன் சமநிலையான ஆளுமையை வளர்த்துக் கொள்ள பார்வையற்றோரை மேம்படுத்துவது."}
+              </p>
+            </div>
+
+            {/* Contacts */}
+            <div className="bg-gray-100 py-16 px-8 md:px-12 flex flex-col items-center justify-center">
+              <h2 className="mb-8 text-4xl font-bold text-[#1e3a8a] text-center">
+                {language === "en" ? "Contacts" : "தொடர்புகள்"}
+              </h2>
+              <div className="space-y-4 text-center">
+                <p className="text-lg text-gray-800">
+                  <span className="font-semibold">E-mail :</span>{" "}
+                  <a href="mailto:vaazhvaham1988@gmail.com" className="text-[#1e3a8a] hover:underline">
+                    vaazhvaham1988@gmail.com
+                  </a>
+                </p>
+                <p className="text-lg text-gray-800">
+                  <span className="font-semibold">Call To :</span>{" "}
+                  <a href="tel:021-224-0146" className="text-[#1e3a8a] hover:underline">
+                    021-224-0146
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
         </div>
