@@ -47,6 +47,11 @@ export function Footer() {
             <ul className="space-y-2 text-sm">
               <li>
                 <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+                  {language === "en" ? "Company" : "நிறுவனம்"}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
                   {language === "en" ? "About Us" : "எங்களை பற்றி"}
                 </Link>
               </li>
