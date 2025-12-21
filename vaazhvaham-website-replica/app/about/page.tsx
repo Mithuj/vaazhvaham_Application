@@ -95,9 +95,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "President" : "தலைவர்"}
                   </h3>
+                  <p className="font-medium mb-1">Mr. A. Raveendran J.P(WI)</p>
+                  <p className="text-sm text-muted-foreground">
+                    B.A, PGDE (Hons), M.Ed, SLTES – 3
+                  </p>
                 </CardContent>
               </Card>
 
@@ -111,9 +115,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Vice President" : "துணைத் தலைவர்"}
                   </h3>
+                  <p className="font-medium mb-1">Mrs. M.V. Raveendran</p>
+                  <p className="text-sm text-muted-foreground">
+                    B.A(Hons), PGDE, PGDSE, SLTS – 1
+                  </p>
                 </CardContent>
               </Card>
 
@@ -127,9 +135,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Secretary" : "செயலாளர்"}
                   </h3>
+                  <p className="font-medium mb-1">Mr. V.K. Raveeharan J.P(WI)</p>
+                  <p className="text-sm text-muted-foreground">
+                    B.Com, PGDE, M.Ed (Hons), M.Com (Hons), SLTS
+                  </p>
                 </CardContent>
               </Card>
 
@@ -143,9 +155,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
-                    {language === "en" ? "Assistant Secretary" : "உதவி செயலாளர்"}
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
+                    {language === "en" ? "Asst. Secretary" : "உதவி செயலாளர்"}
                   </h3>
+                  <p className="font-medium mb-1">Mr. T. Akilan</p>
+                  <p className="text-sm text-muted-foreground">
+                    B.Sc(Computer Science, UK)
+                  </p>
                 </CardContent>
               </Card>
 
@@ -159,9 +175,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Treasurer" : "பொருளாளர்"}
                   </h3>
+                  <p className="font-medium mb-1">Mr. T. Vamadevan J.P(WI)</p>
+                  <p className="text-sm text-muted-foreground">
+                    Spe. Trd (Primary), B.Ed, Dip.in.School Mgt, M.Ed (Hons), SLPS
+                  </p>
                 </CardContent>
               </Card>
 
@@ -175,9 +195,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Committee Member" : "குழு உறுப்பினர்"}
                   </h3>
+                  <p className="font-medium mb-1">Mr. S. Tharumathan</p>
+                  <p className="text-sm text-muted-foreground">
+                    LL.B, Attorney-at-law
+                  </p>
                 </CardContent>
               </Card>
 
@@ -191,9 +215,10 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Committee Member" : "குழு உறுப்பினர்"}
                   </h3>
+                  <p className="font-medium">Mr. R. Suththananthan</p>
                 </CardContent>
               </Card>
 
@@ -207,9 +232,10 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Committee Member" : "குழு உறுப்பினர்"}
                   </h3>
+                  <p className="font-medium">Mr. T. Shanmuganathan</p>
                 </CardContent>
               </Card>
 
@@ -223,9 +249,10 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Committee Member" : "குழு உறுப்பினர்"}
                   </h3>
+                  <p className="font-medium">Mr. P. Thirukumaran</p>
                 </CardContent>
               </Card>
 
@@ -239,9 +266,13 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Committee Member" : "குழு உறுப்பினர்"}
                   </h3>
+                  <p className="font-medium mb-1">Miss. D. Gnanaseelan</p>
+                  <p className="text-sm text-muted-foreground">
+                    B.A(Hons), Dip. in Counselling
+                  </p>
                 </CardContent>
               </Card>
 
@@ -255,9 +286,10 @@ export default function AboutPage() {
                   />
                 </div>
                 <CardContent className="p-6 text-center">
-                  <h3 className="text-xl font-semibold mb-2">
+                  <h3 className="text-lg font-semibold mb-2 text-primary">
                     {language === "en" ? "Committee Member" : "குழு உறுப்பினர்"}
                   </h3>
+                  <p className="font-medium">Mrs. P. Neminathan</p>
                 </CardContent>
               </Card>
             </div>
