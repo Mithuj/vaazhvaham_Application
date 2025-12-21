@@ -46,7 +46,7 @@ export function Footer() {
             <h3 className="mb-4 text-lg font-semibold">{language === "en" ? "Quick Links" : "விரைவு இணைப்புகள்"}</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link href="/selectrole" className="text-muted-foreground hover:text-primary transition-colors">
                   {language === "en" ? "Company" : "நிறுவனம்"}
                 </Link>
               </li>
