@@ -199,53 +199,58 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mx-auto max-w-4xl">
-            <div className="relative overflow-hidden rounded-lg bg-white shadow-lg" style={{ height: '500px' }}>
-              <style jsx>{`
-                @keyframes scrollUp {
-                  0% {
-                    transform: translateY(0);
-                  }
-                  100% {
-                    transform: translateY(-50%);
-                  }
+          <div className="relative overflow-hidden">
+            <style jsx>{`
+              @keyframes scrollHorizontal {
+                0% {
+                  transform: translateX(0);
                 }
-                .animate-scroll {
-                  animation: scrollUp 30s linear infinite;
+                100% {
+                  transform: translateX(-50%);
                 }
-                .animate-scroll:hover {
-                  animation-play-state: paused;
-                }
-              `}</style>
-              
-              <div className="animate-scroll">
-                {/* Duplicate events for seamless loop */}
-                {[...upcomingEvents, ...upcomingEvents].map((event, index) => (
-                  <Card key={index} className="m-4 transition-all hover:shadow-xl border-l-4 border-l-primary">
-                    <CardContent className="p-6">
-                      <div className="flex items-start gap-4">
-                        <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-lg bg-primary/10">
-                          <Calendar className="h-7 w-7 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="mb-2 text-sm font-semibold text-primary">{event.date}</p>
-                          <h3 className="text-lg font-bold leading-snug mb-2">{event.title}</h3>
-                          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <Clock className="h-4 w-4" />
-                              {event.time}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <MapPin className="h-4 w-4" />
-                              {event.location}
-                            </span>
-                          </div>
-                        </div>
+              }
+              .animate-scroll-horizontal {
+                animation: scrollHorizontal 40s linear infinite;
+              }
+              .animate-scroll-horizontal:hover {
+                animation-play-state: paused;
+              }
+            `}</style>
+            
+            <div className="flex animate-scroll-horizontal" style={{ width: 'fit-content' }}>
+              {/* Duplicate events for seamless loop */}
+              {[...upcomingEvents, ...upcomingEvents].map((event, index) => (
+                <Card 
+                  key={index} 
+                  className="flex-shrink-0 w-[350px] mx-3 transition-all hover:shadow-xl"
+                  style={{ minHeight: '280px' }}
+                >
+                  <CardHeader>
+                    <div className="mb-3 flex items-center justify-center">
+                      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+                        <Calendar className="h-7 w-7 text-primary" />
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+                    </div>
+                    <CardTitle className="text-lg text-center leading-snug mb-3">
+                      {event.title}
+                    </CardTitle>
+                    <CardDescription className="space-y-2">
+                      <div className="flex items-center gap-2 text-sm justify-center">
+                        <Calendar className="h-4 w-4" />
+                        <span>{event.date}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm justify-center">
+                        <Clock className="h-4 w-4" />
+                        <span>{event.time}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm justify-center">
+                        <MapPin className="h-4 w-4" />
+                        <span>{event.location}</span>
+                      </div>
+                    </CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
             </div>
           </div>
 
