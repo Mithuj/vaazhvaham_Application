@@ -35,7 +35,9 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 flex-shrink-0" />
-                <span>+94 21 222 3456</span>
+                <a href="tel:+94212240146" className="hover:text-primary transition-colors">
+                  +94 21 224 0146
+                </a>
               </li>
             </ul>
           </div>
@@ -79,7 +81,7 @@ export function Footer() {
                 <Facebook className="h-5 w-5" />
               </a>
               <a
-                href="https://wa.me/94212223456"
+                href="https://wa.me/94212240146"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-10 w-10 items-center justify-center rounded-lg border bg-background transition-colors hover:bg-accent hover:text-accent-foreground"

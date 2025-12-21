@@ -96,7 +96,23 @@ export default function ContactPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-muted-foreground">+94 21 222 3456</p>
+                    <div className="space-y-2">
+                      <p className="text-muted-foreground">
+                        <a href="tel:+94212240146" className="hover:text-primary transition-colors">
+                          +94 21 224 0146
+                        </a>
+                      </p>
+                      <p className="text-muted-foreground">
+                        <a href="tel:+94212240236" className="hover:text-primary transition-colors">
+                          +94 21 224 0236
+                        </a>
+                      </p>
+                      <p className="text-muted-foreground">
+                        <a href="tel:+94768286331" className="hover:text-primary transition-colors">
+                          +94 76 828 6331
+                        </a>
+                      </p>
+                    </div>
                   </CardContent>
                 </Card>
 
