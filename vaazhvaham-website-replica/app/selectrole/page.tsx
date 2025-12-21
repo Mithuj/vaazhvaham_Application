@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
 
 export default function SelectRolePage() {
   const [selectedRole, setSelectedRole] = useState<string>("")
@@ -22,7 +24,16 @@ export default function SelectRolePage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/30 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted/30 px-4 py-12 relative">
+      {/* Go to Website Button */}
+      <Link
+        href="/"
+        className="absolute top-6 left-6 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+      >
+        <ArrowLeft className="h-5 w-5" />
+        Go to the website
+      </Link>
+
       <Card className="w-full max-w-md p-8 space-y-8 shadow-xl">
         {/* Header */}
         <div className="text-center">
@@ -82,7 +93,7 @@ export default function SelectRolePage() {
         {/* Sign In Button */}
         <Button
           onClick={handleSignIn}
-          className="w-full h-14 text-lg font-semibold rounded-xl bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg hover:shadow-xl transition-all"
+          className="w-full h-14 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
           SIGN IN
         </Button>
