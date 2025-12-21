@@ -89,15 +89,15 @@ export default function HomePage() {
       </section>
 
       {/* Our Mission and Vision Section */}
-      <section className="py-0">
-        <div className="container mx-auto px-0">
-          <div className="grid md:grid-cols-2">
+      <section className="py-12 md:py-16 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
             {/* Our Mission */}
-            <div className="bg-gray-50 py-16 px-8 md:px-12">
-              <h2 className="mb-8 text-4xl font-bold text-[#1e3a8a] text-center">
+            <div className="bg-white rounded-lg shadow-md p-8 md:p-10">
+              <h2 className="mb-5 text-2xl md:text-3xl font-bold text-[#1e3a8a] text-center">
                 {language === "en" ? "OUR MISSION" : "எங்கள் நோக்கம்"}
               </h2>
-              <p className="text-base text-gray-700 leading-relaxed text-justify">
+              <p className="text-sm md:text-base text-gray-700 leading-relaxed text-justify">
                 {language === "en"
                   ? "To prepare the visually handicapped to pave the way for living with good qualities using available resources to have equal opportunities and rights like others have by getting purity of mind and realizing themselves completely through education."
                   : "கல்வியின் மூலம் மனத்தூய்மையைப் பெறுவதன் மூலமும், தங்களை முழுமையாக உணர்ந்து கொள்வதன் மூலமும், இருக்கும் வளங்களைப் பயன்படுத்தி நல்ல பண்புகளுடன் வாழ்வதற்கான வழியைத் திறக்க பார்வையற்றோரைத் தயார்படுத்துவது."}
@@ -106,18 +106,18 @@ export default function HomePage() {
 
             {/* Motto with Image */}
             <div 
-              className="relative bg-cover bg-center py-16 px-8 md:px-12 flex items-center justify-center"
+              className="relative bg-cover bg-center rounded-lg shadow-md p-8 md:p-10 flex items-center justify-center min-h-[250px]"
               style={{
                 backgroundImage: "url('/motto-bg.jpg')",
                 backgroundPosition: "center",
               }}
             >
-              <div className="absolute inset-0 bg-black/30"></div>
+              <div className="absolute inset-0 bg-black/40 rounded-lg"></div>
               <div className="relative z-10 text-white text-center">
-                <h2 className="mb-6 text-5xl font-bold drop-shadow-lg">
+                <h2 className="mb-4 text-3xl md:text-4xl font-bold drop-shadow-lg">
                   {language === "en" ? "Motto" : "குறிக்கோள்"}
                 </h2>
-                <p className="text-2xl font-medium drop-shadow-lg">
+                <p className="text-lg md:text-xl font-medium drop-shadow-lg">
                   {language === "en" 
                     ? "Education is light. Education is path."
                     : "கல்வி ஒளி. கல்வி பாதை."}
@@ -126,11 +126,11 @@ export default function HomePage() {
             </div>
 
             {/* Our Vision */}
-            <div className="bg-[#1e3a8a] py-16 px-8 md:px-12 text-white">
-              <h2 className="mb-8 text-4xl font-bold text-center">
+            <div className="bg-[#1e3a8a] rounded-lg shadow-md p-8 md:p-10 text-white">
+              <h2 className="mb-5 text-2xl md:text-3xl font-bold text-center">
                 {language === "en" ? "OUR VISION" : "எங்கள் தொலைநோக்கு"}
               </h2>
-              <p className="text-base leading-relaxed text-justify">
+              <p className="text-sm md:text-base leading-relaxed text-justify">
                 {language === "en"
                   ? "To empower the visually handicapped to develop the potential balanced personality with knowledge and efficiency for facing the challenging life through Education."
                   : "கல்வியின் மூலம் சவாலான வாழ்க்கையை எதிர்கொள்ள அறிவு மற்றும் திறமையுடன் சமநிலையான ஆளுமையை வளர்த்துக் கொள்ள பார்வையற்றோரை மேம்படுத்துவது."}
@@ -138,18 +138,18 @@ export default function HomePage() {
             </div>
 
             {/* Contacts */}
-            <div className="bg-gray-100 py-16 px-8 md:px-12 flex flex-col items-center justify-center">
-              <h2 className="mb-8 text-4xl font-bold text-[#1e3a8a] text-center">
+            <div className="bg-white rounded-lg shadow-md p-8 md:p-10 flex flex-col items-center justify-center">
+              <h2 className="mb-5 text-2xl md:text-3xl font-bold text-[#1e3a8a] text-center">
                 {language === "en" ? "Contacts" : "தொடர்புகள்"}
               </h2>
-              <div className="space-y-4 text-center">
-                <p className="text-lg text-gray-800">
+              <div className="space-y-3 text-center">
+                <p className="text-sm md:text-base text-gray-800">
                   <span className="font-semibold">E-mail :</span>{" "}
                   <a href="mailto:vaazhvaham1988@gmail.com" className="text-[#1e3a8a] hover:underline">
                     vaazhvaham1988@gmail.com
                   </a>
                 </p>
-                <p className="text-lg text-gray-800">
+                <p className="text-sm md:text-base text-gray-800">
                   <span className="font-semibold">Call To :</span>{" "}
                   <a href="tel:021-224-0146" className="text-[#1e3a8a] hover:underline">
                     021-224-0146
