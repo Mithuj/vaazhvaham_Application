@@ -6,7 +6,11 @@ import { Footer } from "@/components/footer"
 
 export function ConditionalLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const hideHeaderFooter = pathname === "/selectrole"
+  const hideHeaderFooter = 
+    pathname === "/selectrole" || 
+    pathname === "/admindashboard" || 
+    pathname === "/staffdashboard" || 
+    pathname === "/managementdashboard"
 
   if (hideHeaderFooter) {
     return <>{children}</>

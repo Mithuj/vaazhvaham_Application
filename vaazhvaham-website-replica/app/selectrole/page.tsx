@@ -6,21 +6,40 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function SelectRolePage() {
   const [selectedRole, setSelectedRole] = useState<string>("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const router = useRouter()
 
   const roles = [
-    { id: "administrator", label: "Administrator" },
-    { id: "lecturer", label: "Lecturer/Staff" },
-    { id: "student", label: "Student" },
+    { id: "administrator", label: "Admin" },
+    { id: "lecturer", label: "Staffs" },
+    { id: "student", label: "Management" },
   ]
 
   const handleSignIn = () => {
-    console.log("Sign in with:", { selectedRole, email, password })
-    // Sign-in logic will be implemented later
+    if (!selectedRole || !email || !password) {
+      alert("Please select a role and enter email and password")
+      return
+    }
+
+    // Navigate based on selected role
+    switch (selectedRole) {
+      case "administrator":
+        router.push("/admindashboard")
+        break
+      case "lecturer":
+        router.push("/staffdashboard")
+        break
+      case "student":
+        router.push("/managementdashboard")
+        break
+      default:
+        break
+    }
   }
 
   return (
