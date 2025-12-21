@@ -55,6 +55,7 @@ export default function HomePage() {
     {
       date: "4th January 2025",
       title: language === "en" ? "International Braille Day celebration" : "சர்வதேச பிரெய்லி தினக் கொண்டாட்டம்",
+      category: language === "en" ? "Event" : "நிகழ்வு",
       excerpt:
         language === "en"
           ? "We celebrated International Braille Day with our students and staff, highlighting the importance of accessible reading materials for the visually impaired community."
@@ -63,6 +64,7 @@ export default function HomePage() {
     {
       date: "15th December 2024",
       title: language === "en" ? "New Braille Equipment Donation" : "புதிய பிரெய்லி உபகரண நன்கொடை",
+      category: language === "en" ? "Donation" : "நன்கொடை",
       excerpt:
         language === "en"
           ? "Thanks to generous donors, we received new Braille machines and educational materials to enhance our students' learning experience."
@@ -71,10 +73,38 @@ export default function HomePage() {
     {
       date: "1st November 2024",
       title: language === "en" ? "Vocational Training Program Launch" : "தொழிற்பயிற்சி திட்டம் தொடக்கம்",
+      category: language === "en" ? "Program" : "திட்டம்",
       excerpt:
         language === "en"
           ? "We launched a new vocational training program to help our residents develop skills for independent living and employment opportunities."
           : "சுதந்திரமான வாழ்க்கை மற்றும் வேலை வாய்ப்புகளுக்கான திறன்களை வளர்த்துக் கொள்ள உதவுவதற்காக புதிய தொழிற்பயிற்சி திட்டத்தைத் தொடங்கினோம்.",
+    },
+    {
+      date: "20th October 2024",
+      title: language === "en" ? "Community Partnership Announcement" : "சமூக கூட்டாண்மை அறிவிப்பு",
+      category: language === "en" ? "Partnership" : "கூட்டாண்மை",
+      excerpt:
+        language === "en"
+          ? "We are pleased to announce a new partnership with local businesses to provide employment opportunities for our graduates."
+          : "எங்கள் பட்டதாரிகளுக்கு வேலை வாய்ப்புகளை வழங்க உள்ளூர் வணிகங்களுடன் ஒரு புதிய கூட்டாண்மையை அறிவிப்பதில் மகிழ்ச்சி அடைகிறோம்.",
+    },
+    {
+      date: "5th September 2024",
+      title: language === "en" ? "Annual Sports Day Success" : "ஆண்டு விளையாட்டு நாள் வெற்றி",
+      category: language === "en" ? "Event" : "நிகழ்வு",
+      excerpt:
+        language === "en"
+          ? "Our annual sports day was a tremendous success with participants from neighboring institutions joining us for adaptive sports competitions."
+          : "தகவமைப்பு விளையாட்டு போட்டிகளுக்காக அண்டை நிறுவனங்களிலிருந்து பங்கேற்பாளர்கள் எங்களுடன் சேர்ந்து எங்கள் ஆண்டு விளையாட்டு நாள் மிகப்பெரிய வெற்றியாக இருந்தது.",
+    },
+    {
+      date: "15th August 2024",
+      title: language === "en" ? "Independence Day Celebration" : "சுதந்திர தினக் கொண்டாட்டம்",
+      category: language === "en" ? "Event" : "நிகழ்வு",
+      excerpt:
+        language === "en"
+          ? "We celebrated Independence Day with flag hoisting, patriotic songs, and cultural performances by our talented students."
+          : "கொடியேற்றம், தேசபக்தி பாடல்கள் மற்றும் எங்கள் திறமையான மாணவர்களின் கலாச்சார நிகழ்ச்சிகளுடன் சுதந்திர தினத்தைக் கொண்டாடினோம்.",
     },
   ]
 
@@ -276,25 +306,58 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {latestNews.map((news, index) => (
-              <Card key={index} className="flex flex-col transition-shadow hover:shadow-md">
-                <CardHeader>
-                  <CardDescription>{news.date}</CardDescription>
-                  <CardTitle className="text-xl leading-relaxed">{news.title}</CardTitle>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <p className="mb-4 text-sm text-muted-foreground leading-relaxed">{news.excerpt}</p>
-                  <Link href={`/news/${index + 1}`} className="text-sm font-medium text-primary hover:underline">
-                    {language === "en" ? "Read more →" : "மேலும் வாசிக்க →"}
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="relative overflow-hidden">
+            <style jsx>{`
+              @keyframes scrollNews {
+                0% {
+                  transform: translateX(0);
+                }
+                100% {
+                  transform: translateX(-50%);
+                }
+              }
+              .animate-scroll-news {
+                animation: scrollNews 45s linear infinite;
+              }
+              .animate-scroll-news:hover {
+                animation-play-state: paused;
+              }
+            `}</style>
+            
+            <div className="flex animate-scroll-news" style={{ width: 'fit-content' }}>
+              {/* Duplicate news for seamless loop */}
+              {[...latestNews, ...latestNews].map((news, index) => (
+                <Card 
+                  key={index} 
+                  className="flex-shrink-0 w-[350px] mx-3 transition-all hover:shadow-xl flex flex-col"
+                  style={{ minHeight: '320px' }}
+                >
+                  <CardHeader>
+                    <div className="mb-2 flex items-center justify-center">
+                      <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                        {news.category}
+                      </span>
+                    </div>
+                    <CardDescription className="flex items-center gap-2 text-sm justify-center">
+                      <Calendar className="h-4 w-4" />
+                      <span>{news.date}</span>
+                    </CardDescription>
+                    <CardTitle className="text-lg text-center leading-snug">
+                      {news.title}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex-1">
+                    <p className="text-sm text-muted-foreground leading-relaxed text-center">
+                      {news.excerpt}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
 
           <div className="mt-8 text-center">
-            <Button variant="outline" asChild>
+            <Button variant="default" size="lg" asChild>
               <Link href="/news">{language === "en" ? "View All News" : "அனைத்து செய்திகளையும் காண்க"}</Link>
             </Button>
           </div>
