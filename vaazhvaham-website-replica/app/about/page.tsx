@@ -259,7 +259,7 @@ export default function AboutPage() {
               <Card className="overflow-hidden transition-shadow hover:shadow-lg">
                 <div className="aspect-square relative overflow-hidden bg-muted">
                   <img 
-                    src="/commitee1.jpg" 
+                    src="/Committee1.jpg" 
                     alt="Committee Member" 
                     className="h-full w-full object-cover"
                   />
