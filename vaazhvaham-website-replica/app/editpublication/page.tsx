@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -9,11 +9,13 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 
 export default function EditPublicationPage() {
+  const [showHeadingForm, setShowHeadingForm] = useState(false)
   const [formData, setFormData] = useState({
     chooseHeading: "",
     year: "",
     coverImage: null as File | null,
-    heading: "",
+    headingEnglish: "",
+    headingTamil: "",
     pdfFile: null as File | null
   })
 
@@ -107,20 +109,52 @@ export default function EditPublicationPage() {
               )}
             </div>
 
-            {/* Heading */}
-            <div className="space-y-2 md:space-y-3">
-              <Label htmlFor="heading" className="text-sm sm:text-base font-medium">
-                Heading
-              </Label>
-              <Input
-                id="heading"
-                type="text"
-                placeholder="Enter publication heading"
-                value={formData.heading}
-                onChange={(e) => setFormData({ ...formData, heading: e.target.value })}
-                required
-                className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
-              />
+            {/* Add Heading of Publication Button */}
+            <div className="space-y-4 md:space-y-5">
+              <Button
+                type="button"
+                variant={showHeadingForm ? "default" : "outline"}
+                onClick={() => setShowHeadingForm(!showHeadingForm)}
+                className="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg font-medium transition-all"
+              >
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                {showHeadingForm ? "Hide Heading Form" : "Add Heading of Publication"}
+              </Button>
+
+              {/* Heading Sub-form */}
+              {showHeadingForm && (
+                <Card className="p-4 sm:p-5 md:p-6 space-y-4 md:space-y-5 bg-muted/50 border-2 animate-in slide-in-from-top-2">
+                  <div className="space-y-2 md:space-y-3">
+                    <Label htmlFor="headingEnglish" className="text-sm sm:text-base font-medium">
+                      Publication Heading in English
+                    </Label>
+                    <Input
+                      id="headingEnglish"
+                      type="text"
+                      placeholder="Enter publication heading in English"
+                      value={formData.headingEnglish}
+                      onChange={(e) => setFormData({ ...formData, headingEnglish: e.target.value })}
+                      required
+                      className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
+                    />
+                  </div>
+
+                  <div className="space-y-2 md:space-y-3">
+                    <Label htmlFor="headingTamil" className="text-sm sm:text-base font-medium">
+                      Publication Heading in Tamil
+                    </Label>
+                    <Input
+                      id="headingTamil"
+                      type="text"
+                      placeholder="Enter publication heading in Tamil"
+                      value={formData.headingTamil}
+                      onChange={(e) => setFormData({ ...formData, headingTamil: e.target.value })}
+                      required
+                      className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
+                    />
+                  </div>
+                </Card>
+              )}
             </div>
 
             {/* Add PDF */}
