@@ -22,7 +22,10 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
     pathname === "/deletenews" ||
     pathname === "/addpublication" ||
     pathname === "/editpublication" ||
-    pathname === "/deletepublication"
+    pathname === "/deletepublication" ||
+    pathname === "/addevent" ||
+    pathname === "/editevent" ||
+    pathname === "/deleteevent"
 
   if (hideHeaderFooter) {
     return <>{children}</>
