@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Plus, Edit, Trash2 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 
 export default function PublicationManagementPage() {
   return (
@@ -15,13 +17,42 @@ export default function PublicationManagementPage() {
         <span className="hidden sm:inline">Back</span>
       </Link>
 
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12">
         Publication Management
       </h1>
 
-      {/* Content will be added here */}
       <div className="w-full max-w-4xl mx-auto">
-        <p className="text-center text-muted-foreground">Publication management content coming soon...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* Add Publication */}
+          <Card className="p-4">
+            <Link href="/addpublication" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <Plus className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Add Publication</span>
+              </Button>
+            </Link>
+          </Card>
+          
+          {/* Edit Publication */}
+          <Card className="p-4">
+            <Link href="/editpublication" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <Edit className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Edit Publication</span>
+              </Button>
+            </Link>
+          </Card>
+          
+          {/* Delete Publication */}
+          <Card className="p-4">
+            <Link href="/deletepublication" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <Trash2 className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Delete Publication</span>
+              </Button>
+            </Link>
+          </Card>
+        </div>
       </div>
     </div>
   )
