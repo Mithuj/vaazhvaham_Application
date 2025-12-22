@@ -1,7 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, UserPlus, UserCog, Shield } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 
 export default function StaffManagementPage() {
   return (
@@ -15,13 +17,42 @@ export default function StaffManagementPage() {
         <span className="hidden sm:inline">Back</span>
       </Link>
 
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8">
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12">
         Staff Management
       </h1>
 
-      {/* Content will be added here */}
       <div className="w-full max-w-4xl mx-auto">
-        <p className="text-center text-muted-foreground">Staff management content coming soon...</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* Add Staff */}
+          <Card className="p-4">
+            <Link href="/addstaff" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <UserPlus className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Add Staff</span>
+              </Button>
+            </Link>
+          </Card>
+          
+          {/* Edit Staff */}
+          <Card className="p-4">
+            <Link href="/editstaff" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <UserCog className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Edit Staff</span>
+              </Button>
+            </Link>
+          </Card>
+          
+          {/* Permission Handling */}
+          <Card className="p-4">
+            <Link href="/permissionhandling" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <Shield className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Permission Handling</span>
+              </Button>
+            </Link>
+          </Card>
+        </div>
       </div>
     </div>
   )
