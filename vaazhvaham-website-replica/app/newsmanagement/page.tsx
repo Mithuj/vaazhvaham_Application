@@ -34,40 +34,42 @@ export default function NewsManagementPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start p-4 md:p-8 bg-background relative">
+    <div className="min-h-screen flex flex-col items-center justify-start px-3 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:px-12 lg:py-12 bg-background relative">
       {/* Back Button */}
       <Link
         href="/admindashboard"
-        className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+        className="absolute top-4 left-3 sm:top-6 sm:left-6 md:top-8 md:left-8 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors z-10"
       >
-        <ArrowLeft className="h-5 w-5" />
-        <span className="hidden sm:inline">Back</span>
+        <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+        <span className="text-sm sm:text-base hidden sm:inline">Back</span>
       </Link>
 
-      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 mt-16">
+      <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 mt-12 sm:mt-14 md:mt-16 px-4">
         News Management
       </h1>
 
-      <div className="w-full max-w-3xl mx-auto">
-        <Card className="p-6 md:p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
+        <Card className="p-4 sm:p-6 md:p-8 lg:p-10 shadow-lg">
+          <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7 md:space-y-8">
             {/* Add Heading of News Button */}
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-5">
               <Button
                 type="button"
                 variant={showHeadingForm ? "default" : "outline"}
                 onClick={() => setShowHeadingForm(!showHeadingForm)}
-                className="w-full"
+                className="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg font-medium transition-all"
               >
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                 {showHeadingForm ? "Hide Heading Form" : "Add Heading of News"}
               </Button>
 
               {/* Heading Sub-form */}
               {showHeadingForm && (
-                <Card className="p-4 space-y-4 bg-muted/50">
-                  <div className="space-y-2">
-                    <Label htmlFor="headingEnglish">News Heading in English</Label>
+                <Card className="p-4 sm:p-5 md:p-6 space-y-4 md:space-y-5 bg-muted/50 border-2 animate-in slide-in-from-top-2">
+                  <div className="space-y-2 md:space-y-3">
+                    <Label htmlFor="headingEnglish" className="text-sm sm:text-base font-medium">
+                      News Heading in English
+                    </Label>
                     <Input
                       id="headingEnglish"
                       type="text"
@@ -75,11 +77,14 @@ export default function NewsManagementPage() {
                       value={formData.headingEnglish}
                       onChange={(e) => setFormData({ ...formData, headingEnglish: e.target.value })}
                       required
+                      className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="headingTamil">News Heading in Tamil</Label>
+                  <div className="space-y-2 md:space-y-3">
+                    <Label htmlFor="headingTamil" className="text-sm sm:text-base font-medium">
+                      News Heading in Tamil
+                    </Label>
                     <Input
                       id="headingTamil"
                       type="text"
@@ -87,6 +92,7 @@ export default function NewsManagementPage() {
                       value={formData.headingTamil}
                       onChange={(e) => setFormData({ ...formData, headingTamil: e.target.value })}
                       required
+                      className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                     />
                   </div>
                 </Card>
@@ -94,51 +100,59 @@ export default function NewsManagementPage() {
             </div>
 
             {/* Add Image from Gallery */}
-            <div className="space-y-2">
-              <Label htmlFor="image">Add Image from Gallery</Label>
+            <div className="space-y-2 md:space-y-3">
+              <Label htmlFor="image" className="text-sm sm:text-base font-medium">
+                Add Image from Gallery
+              </Label>
               <Input
                 id="image"
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
                 required
+                className="h-10 sm:h-11 md:h-12 text-sm sm:text-base cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
               />
               {formData.image && (
-                <p className="text-sm text-muted-foreground">
-                  Selected: {formData.image.name}
+                <p className="text-xs sm:text-sm text-muted-foreground mt-2 px-1">
+                  ✓ Selected: {formData.image.name}
                 </p>
               )}
             </div>
 
             {/* Select News Date */}
-            <div className="space-y-2">
-              <Label htmlFor="newsDate">Select the News Date</Label>
+            <div className="space-y-2 md:space-y-3">
+              <Label htmlFor="newsDate" className="text-sm sm:text-base font-medium">
+                Select the News Date
+              </Label>
               <Input
                 id="newsDate"
                 type="date"
                 value={formData.newsDate}
                 onChange={(e) => setFormData({ ...formData, newsDate: e.target.value })}
                 required
+                className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
               />
             </div>
 
             {/* Add Paragraph Button */}
-            <div className="space-y-4">
+            <div className="space-y-4 md:space-y-5">
               <Button
                 type="button"
                 variant={showParagraphForm ? "default" : "outline"}
                 onClick={() => setShowParagraphForm(!showParagraphForm)}
-                className="w-full"
+                className="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg font-medium transition-all"
               >
-                <Plus className="h-4 w-4 mr-2" />
+                <Plus className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                 {showParagraphForm ? "Hide Paragraph Form" : "Add the Paragraph"}
               </Button>
 
               {/* Paragraph Sub-form */}
               {showParagraphForm && (
-                <Card className="p-4 space-y-4 bg-muted/50">
-                  <div className="space-y-2">
-                    <Label htmlFor="paragraphEnglish">News Paragraph in English</Label>
+                <Card className="p-4 sm:p-5 md:p-6 space-y-4 md:space-y-5 bg-muted/50 border-2 animate-in slide-in-from-top-2">
+                  <div className="space-y-2 md:space-y-3">
+                    <Label htmlFor="paragraphEnglish" className="text-sm sm:text-base font-medium">
+                      News Paragraph in English
+                    </Label>
                     <Textarea
                       id="paragraphEnglish"
                       placeholder="Enter news paragraph in English"
@@ -146,11 +160,14 @@ export default function NewsManagementPage() {
                       onChange={(e) => setFormData({ ...formData, paragraphEnglish: e.target.value })}
                       required
                       rows={5}
+                      className="text-sm sm:text-base min-h-[120px] sm:min-h-[140px] md:min-h-[160px] resize-y"
                     />
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="paragraphTamil">News Paragraph in Tamil</Label>
+                  <div className="space-y-2 md:space-y-3">
+                    <Label htmlFor="paragraphTamil" className="text-sm sm:text-base font-medium">
+                      News Paragraph in Tamil
+                    </Label>
                     <Textarea
                       id="paragraphTamil"
                       placeholder="Enter news paragraph in Tamil"
@@ -158,6 +175,7 @@ export default function NewsManagementPage() {
                       onChange={(e) => setFormData({ ...formData, paragraphTamil: e.target.value })}
                       required
                       rows={5}
+                      className="text-sm sm:text-base min-h-[120px] sm:min-h-[140px] md:min-h-[160px] resize-y"
                     />
                   </div>
                 </Card>
@@ -165,9 +183,12 @@ export default function NewsManagementPage() {
             </div>
 
             {/* Submit Button */}
-            <div className="pt-4">
-              <Button type="submit" className="w-full">
-                Submit
+            <div className="pt-4 sm:pt-6 md:pt-8">
+              <Button 
+                type="submit" 
+                className="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg font-semibold shadow-md hover:shadow-lg transition-all"
+              >
+                Submit News
               </Button>
             </div>
           </form>
