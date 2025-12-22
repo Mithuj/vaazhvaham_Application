@@ -19,7 +19,8 @@ export default function EditStaffPage() {
     email: "",
     password: "",
     position: "",
-    activation: ""
+    activation: "",
+    permission: ""
   })
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -37,7 +38,8 @@ export default function EditStaffPage() {
       email: "",
       password: "",
       position: "",
-      activation: ""
+      activation: "",
+      permission: ""
     })
   }
 
@@ -169,6 +171,24 @@ export default function EditStaffPage() {
                 <SelectContent>
                   <SelectItem value="activate">Activate</SelectItem>
                   <SelectItem value="inactive">Inactive</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Give Permission */}
+            <div className="space-y-2">
+              <Label htmlFor="permission">Give Permission</Label>
+              <Select
+                value={formData.permission}
+                onValueChange={(value) => setFormData({ ...formData, permission: value })}
+                required
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select permission" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="yes">Yes</SelectItem>
+                  <SelectItem value="no">No</SelectItem>
                 </SelectContent>
               </Select>
             </div>
