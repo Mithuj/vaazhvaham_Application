@@ -10,7 +10,11 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
     pathname === "/selectrole" || 
     pathname === "/admindashboard" || 
     pathname === "/staffdashboard" || 
-    pathname === "/managementdashboard"
+    pathname === "/managementdashboard" ||
+    pathname === "/staffmanagement" ||
+    pathname === "/newsmanagement" ||
+    pathname === "/eventmanagement" ||
+    pathname === "/publicationmanagement"
 
   if (hideHeaderFooter) {
     return <>{children}</>

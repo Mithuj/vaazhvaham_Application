@@ -25,26 +25,32 @@ export default function ManagementDashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {/* News Management */}
           <Card className="p-4">
-            <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
-              <Newspaper className="h-6 w-6 md:h-8 md:w-8" />
-              <span>News Management</span>
-            </Button>
+            <Link href="/newsmanagement" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <Newspaper className="h-6 w-6 md:h-8 md:w-8" />
+                <span>News Management</span>
+              </Button>
+            </Link>
           </Card>
           
           {/* Event Management */}
           <Card className="p-4">
-            <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
-              <Calendar className="h-6 w-6 md:h-8 md:w-8" />
-              <span>Event Management</span>
-            </Button>
+            <Link href="/eventmanagement" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <Calendar className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Event Management</span>
+              </Button>
+            </Link>
           </Card>
           
           {/* Publication Management */}
           <Card className="p-4">
-            <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
-              <BookOpen className="h-6 w-6 md:h-8 md:w-8" />
-              <span>Publication Management</span>
-            </Button>
+            <Link href="/publicationmanagement" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <BookOpen className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Publication Management</span>
+              </Button>
+            </Link>
           </Card>
         </div>
       </div>
