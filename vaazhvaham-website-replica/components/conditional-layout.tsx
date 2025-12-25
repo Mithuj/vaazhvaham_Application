@@ -15,6 +15,15 @@ export function ConditionalLayout({ children }: { children: React.ReactNode }) {
     pathname === "/newsmanagement" ||
     pathname === "/eventmanagement" ||
     pathname === "/publicationmanagement" ||
+    pathname === "/adminnewsmanagement" ||
+    pathname === "/admineventmanagement" ||
+    pathname === "/adminpublicationmanagement" ||
+    pathname === "/staffnewsmanagement" ||
+    pathname === "/staffeventmanagement" ||
+    pathname === "/staffpublicationmanagement" ||
+    pathname === "/managementnewsmanagement" ||
+    pathname === "/managementeventmanagement" ||
+    pathname === "/managementpublicationmanagement" ||
     pathname === "/addstaff" ||
     pathname === "/editstaff" ||
     pathname === "/addnews" ||

@@ -25,7 +25,7 @@ export default function StaffDashboardPage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {/* News Management */}
           <Card className="p-4">
-            <Link href="/newsmanagement" className="block">
+            <Link href="/staffnewsmanagement" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
                 <Newspaper className="h-6 w-6 md:h-8 md:w-8" />
                 <span>News Management</span>
@@ -35,7 +35,7 @@ export default function StaffDashboardPage() {
           
           {/* Event Management */}
           <Card className="p-4">
-            <Link href="/eventmanagement" className="block">
+            <Link href="/staffeventmanagement" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
                 <Calendar className="h-6 w-6 md:h-8 md:w-8" />
                 <span>Event Management</span>
@@ -45,7 +45,7 @@ export default function StaffDashboardPage() {
           
           {/* Publication Management */}
           <Card className="p-4">
-            <Link href="/publicationmanagement" className="block">
+            <Link href="/staffpublicationmanagement" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
                 <BookOpen className="h-6 w-6 md:h-8 md:w-8" />
                 <span>Publication Management</span>

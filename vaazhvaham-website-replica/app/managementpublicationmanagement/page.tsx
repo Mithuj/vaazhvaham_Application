@@ -1,16 +1,16 @@
 "use client"
 
+import Link from "next/link"
+import { ArrowLeft, Plus, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Newspaper, Calendar, BookOpen, ArrowLeft } from "lucide-react"
-import Link from "next/link"
 
-export default function ManagementDashboardPage() {
+export default function ManagementPublicationManagementPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 bg-background relative">
       {/* Back Button */}
       <Link
-        href="/selectrole"
+        href="/managementdashboard"
         className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
       >
         <ArrowLeft className="h-5 w-5" />
@@ -18,37 +18,37 @@ export default function ManagementDashboardPage() {
       </Link>
 
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12">
-        Management Dashboard
+        Management Publication Management
       </h1>
-      
+
       <div className="w-full max-w-4xl mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {/* News Management */}
+          {/* Add Publication */}
           <Card className="p-4">
-            <Link href="/managementnewsmanagement" className="block">
+            <Link href="/addpublication" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
-                <Newspaper className="h-6 w-6 md:h-8 md:w-8" />
-                <span>News Management</span>
+                <Plus className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Add Publication</span>
               </Button>
             </Link>
           </Card>
           
-          {/* Event Management */}
+          {/* Edit Publication */}
           <Card className="p-4">
-            <Link href="/managementeventmanagement" className="block">
+            <Link href="/editpublication" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
-                <Calendar className="h-6 w-6 md:h-8 md:w-8" />
-                <span>Event Management</span>
+                <Edit className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Edit Publication</span>
               </Button>
             </Link>
           </Card>
           
-          {/* Publication Management */}
+          {/* Delete Publication */}
           <Card className="p-4">
-            <Link href="/managementpublicationmanagement" className="block">
+            <Link href="/deletepublication" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
-                <BookOpen className="h-6 w-6 md:h-8 md:w-8" />
-                <span>Publication Management</span>
+                <Trash2 className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Delete Publication</span>
               </Button>
             </Link>
           </Card>

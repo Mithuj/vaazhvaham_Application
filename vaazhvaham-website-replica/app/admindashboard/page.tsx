@@ -35,7 +35,7 @@ export default function AdminDashboardPage() {
           
           {/* News Management */}
           <Card className="p-4">
-            <Link href="/newsmanagement" className="block">
+            <Link href="/adminnewsmanagement" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
                 <Newspaper className="h-6 w-6 md:h-8 md:w-8" />
                 <span>News Management</span>
@@ -45,7 +45,7 @@ export default function AdminDashboardPage() {
           
           {/* Event Management */}
           <Card className="p-4">
-            <Link href="/eventmanagement" className="block">
+            <Link href="/admineventmanagement" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
                 <Calendar className="h-6 w-6 md:h-8 md:w-8" />
                 <span>Event Management</span>
@@ -55,7 +55,7 @@ export default function AdminDashboardPage() {
           
           {/* Publication Management */}
           <Card className="p-4">
-            <Link href="/publicationmanagement" className="block">
+            <Link href="/adminpublicationmanagement" className="block">
               <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
                 <BookOpen className="h-6 w-6 md:h-8 md:w-8" />
                 <span>Publication Management</span>

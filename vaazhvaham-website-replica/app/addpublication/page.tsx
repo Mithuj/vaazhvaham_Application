@@ -1,6 +1,6 @@
 "use client"
 
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { ArrowLeft, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { useState } from "react"
 
 export default function AddPublicationPage() {
+  const router = useRouter()
   const [showHeadingForm, setShowHeadingForm] = useState(false)
   const [formData, setFormData] = useState({
     year: "",
@@ -39,13 +40,13 @@ export default function AddPublicationPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start px-3 py-6 sm:px-6 sm:py-8 md:px-8 md:py-10 lg:px-12 lg:py-12 bg-background relative">
       {/* Back Button */}
-      <Link
-        href="/publicationmanagement"
-        className="absolute top-4 left-3 sm:top-6 sm:left-6 md:top-8 md:left-8 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors z-10"
+      <button
+        onClick={() => router.back()}
+        className="absolute top-4 left-3 sm:top-6 sm:left-6 md:top-8 md:left-8 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors z-10 cursor-pointer"
       >
         <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
         <span className="text-sm sm:text-base hidden sm:inline">Back</span>
-      </Link>
+      </button>
 
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 mt-12 sm:mt-14 md:mt-16 px-4">
         Add Publication
