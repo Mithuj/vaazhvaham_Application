@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
+import { supabase } from "@/lib/supabase"
 
 export default function AddStaffPage() {
   const [formData, setFormData] = useState({
@@ -22,11 +23,59 @@ export default function AddStaffPage() {
     activation: "",
     permission: ""
   })
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
-    // Add your submit logic here
+    setLoading(true)
+    setMessage(null)
+
+    try {
+      // Validate all fields are filled
+      if (!formData.position) {
+        setMessage({ type: 'error', text: 'Please select a position' })
+        setLoading(false)
+        return
+      }
+
+      // Determine which table to insert into based on position
+      const tableName = formData.position === "staff" ? "staff" : "managementstaff"
+      
+      // Prepare data for insertion (matching database column names)
+      const staffData = {
+        full_name: formData.fullName,
+        address: formData.address,
+        phone_number: formData.phoneNumber,
+        nic: formData.nic,
+        email_address: formData.email,
+        password: formData.password, // In production, hash this password!
+        position: formData.position === "staff" ? "Staff" : "Management Staff",
+        activation: formData.activation === "activate" ? "Activate" : "Inactive",
+        give_permission: formData.permission === "yes" ? "Yes" : "No"
+      }
+
+      // Insert into the appropriate table using Supabase client
+      const { data, error } = await supabase
+        .from(tableName)
+        .insert([staffData])
+        .select()
+
+      if (error) {
+        console.error('Supabase error:', error)
+        setMessage({ type: 'error', text: `Error: ${error.message}` })
+      } else {
+        console.log('Successfully inserted:', data)
+        setMessage({ type: 'success', text: `Staff member added successfully to ${tableName} table!` })
+        // Reset form after successful submission
+        handleReset()
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleReset = () => {
@@ -59,6 +108,13 @@ export default function AddStaffPage() {
       </h1>
 
       <div className="w-full max-w-2xl mx-auto">
+        {/* Success/Error Message */}
+        {message && (
+          <div className={`mb-4 p-4 rounded-lg ${message.type === 'success' ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'}`}>
+            {message.text}
+          </div>
+        )}
+
         <Card className="p-6 md:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Full Name */}
@@ -195,10 +251,10 @@ export default function AddStaffPage() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button type="submit" className="flex-1">
-                Submit
+              <Button type="submit" className="flex-1" disabled={loading}>
+                {loading ? 'Submitting...' : 'Submit'}
               </Button>
-              <Button type="button" variant="outline" onClick={handleReset} className="flex-1">
+              <Button type="button" variant="outline" onClick={handleReset} className="flex-1" disabled={loading}>
                 Reset
               </Button>
             </div>
