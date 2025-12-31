@@ -84,7 +84,7 @@ export default function EditStaffPage() {
     const selectedStaff = allStaff.find(s => s.id === staffId)
     
     if (selectedStaff) {
-      // Store which table this staff is from
+      // Store which table this staff is from (original table)
       setSelectedStaffTable(selectedStaff.table)
       
       // Populate form with selected staff data
@@ -127,19 +127,72 @@ export default function EditStaffPage() {
         give_permission: formData.permission === "yes" ? "Yes" : "No"
       }
 
-      // Update the record in the correct table using supabase client
-      const { error } = await supabase
-        .from(selectedStaffTable)
-        .update(updatedData)
-        .eq('id', selectedStaffId)
+      // Determine the target table based on the new position
+      const newTable: 'staff' | 'managementstaff' = 
+        formData.position === "staff" ? "staff" : "managementstaff"
 
-      if (error) {
-        console.error('Update error:', error)
-        setMessage({ type: 'error', text: `Error: ${error.message}` })
-      } else {
-        setMessage({ type: 'success', text: 'Staff member updated successfully!' })
-        // Refresh the staff list
+      // Check if position changed (staff moved to different table)
+      if (newTable !== selectedStaffTable) {
+        // Position changed - need to delete from old table and insert into new table
+        // All using supabase client which uses .env variables
+        
+        // First, delete from the original table
+        const { error: deleteError } = await supabase
+          .from(selectedStaffTable)
+          .delete()
+          .eq('id', selectedStaffId)
+
+        if (deleteError) {
+          console.error('Delete error:', deleteError)
+          setMessage({ type: 'error', text: `Error deleting from old table: ${deleteError.message}` })
+          setLoading(false)
+          return
+        }
+
+        // Then, insert into the new table (without id, let Supabase generate new one)
+        const { error: insertError } = await supabase
+          .from(newTable)
+          .insert([updatedData])
+
+        if (insertError) {
+          console.error('Insert error:', insertError)
+          setMessage({ type: 'error', text: `Error inserting into new table: ${insertError.message}` })
+          setLoading(false)
+          return
+        }
+
+        setMessage({ type: 'success', text: `Staff member moved to ${formData.position === "staff" ? "Staff" : "Management Staff"} table successfully!` })
+        
+        // Reset form and refresh list
+        setSelectedStaffId("")
+        setSelectedStaffTable(null)
+        setFormData({
+          fullName: "",
+          address: "",
+          phoneNumber: "",
+          nic: "",
+          email: "",
+          password: "",
+          position: "",
+          activation: "",
+          permission: ""
+        })
         await fetchAllStaff()
+      } else {
+        // Position unchanged - simply update in the same table
+        const { error } = await supabase
+          .from(selectedStaffTable)
+          .update(updatedData)
+          .eq('id', selectedStaffId)
+
+        if (error) {
+          console.error('Update error:', error)
+          setMessage({ type: 'error', text: `Error: ${error.message}` })
+        } else {
+          setMessage({ type: 'success', text: 'Staff member updated successfully!' })
+          // Refresh the staff list
+          await fetchAllStaff()
+        }
       }
     } catch (error) {
       console.error('Unexpected error:', error)
