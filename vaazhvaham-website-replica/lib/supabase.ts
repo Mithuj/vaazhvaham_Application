@@ -126,6 +126,44 @@ export type Database = {
           give_permission?: string
         }
       }
+      newsmanagement: {
+        Row: {
+          id: string
+          created_at: string
+          news_heading_tamil: string
+          news_heading_english: string
+          news_gallery_code: string
+          date: string
+          news_english_paragraph: string
+          news_tamil_paragraph: string
+          person_id: string
+          person_type: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          news_heading_tamil: string
+          news_heading_english: string
+          news_gallery_code: string
+          date: string
+          news_english_paragraph: string
+          news_tamil_paragraph: string
+          person_id: string
+          person_type: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          news_heading_tamil?: string
+          news_heading_english?: string
+          news_gallery_code?: string
+          date?: string
+          news_english_paragraph?: string
+          news_tamil_paragraph?: string
+          person_id?: string
+          person_type?: string
+        }
+      }
     }
   }
 }
