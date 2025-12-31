@@ -8,9 +8,30 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabase"
+
+type StaffMember = {
+  id: string
+  full_name: string
+  address: string
+  phone_number: string
+  nic: string
+  email_address: string
+  password: string
+  position: string
+  activation: string
+  give_permission: string
+  table: 'staff' | 'managementstaff' // Track which table this record is from
+}
 
 export default function EditStaffPage() {
+  const [allStaff, setAllStaff] = useState<StaffMember[]>([])
+  const [selectedStaffId, setSelectedStaffId] = useState<string>("")
+  const [selectedStaffTable, setSelectedStaffTable] = useState<'staff' | 'managementstaff' | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+  
   const [formData, setFormData] = useState({
     fullName: "",
     address: "",
@@ -23,10 +44,109 @@ export default function EditStaffPage() {
     permission: ""
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch all staff and management staff on component mount
+  useEffect(() => {
+    fetchAllStaff()
+  }, [])
+
+  const fetchAllStaff = async () => {
+    try {
+      // Fetch from staff table using supabase client (which uses .env variables)
+      const { data: staffData, error: staffError } = await supabase
+        .from('staff')
+        .select('*')
+      
+      // Fetch from managementstaff table
+      const { data: managementData, error: managementError } = await supabase
+        .from('managementstaff')
+        .select('*')
+
+      if (staffError) console.error('Error fetching staff:', staffError)
+      if (managementError) console.error('Error fetching management staff:', managementError)
+
+      // Combine both arrays and add table identifier
+      const combinedStaff: StaffMember[] = [
+        ...(staffData || []).map(s => ({ ...s, table: 'staff' as const })),
+        ...(managementData || []).map(m => ({ ...m, table: 'managementstaff' as const }))
+      ]
+
+      setAllStaff(combinedStaff)
+    } catch (error) {
+      console.error('Unexpected error fetching staff:', error)
+    }
+  }
+
+  const handleStaffSelection = (staffId: string) => {
+    setSelectedStaffId(staffId)
+    setMessage(null)
+    
+    // Find the selected staff member
+    const selectedStaff = allStaff.find(s => s.id === staffId)
+    
+    if (selectedStaff) {
+      // Store which table this staff is from
+      setSelectedStaffTable(selectedStaff.table)
+      
+      // Populate form with selected staff data
+      setFormData({
+        fullName: selectedStaff.full_name,
+        address: selectedStaff.address,
+        phoneNumber: selectedStaff.phone_number,
+        nic: selectedStaff.nic,
+        email: selectedStaff.email_address,
+        password: selectedStaff.password,
+        position: selectedStaff.position === "Staff" ? "staff" : "management-staff",
+        activation: selectedStaff.activation === "Activate" ? "activate" : "inactive",
+        permission: selectedStaff.give_permission === "Yes" ? "yes" : "no"
+      })
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
-    // Add your submit logic here
+    setLoading(true)
+    setMessage(null)
+
+    if (!selectedStaffId || !selectedStaffTable) {
+      setMessage({ type: 'error', text: 'Please select a staff member first' })
+      setLoading(false)
+      return
+    }
+
+    try {
+      // Prepare updated data
+      const updatedData = {
+        full_name: formData.fullName,
+        address: formData.address,
+        phone_number: formData.phoneNumber,
+        nic: formData.nic,
+        email_address: formData.email,
+        password: formData.password,
+        position: formData.position === "staff" ? "Staff" : "Management Staff",
+        activation: formData.activation === "activate" ? "Activate" : "Inactive",
+        give_permission: formData.permission === "yes" ? "Yes" : "No"
+      }
+
+      // Update the record in the correct table using supabase client
+      const { error } = await supabase
+        .from(selectedStaffTable)
+        .update(updatedData)
+        .eq('id', selectedStaffId)
+
+      if (error) {
+        console.error('Update error:', error)
+        setMessage({ type: 'error', text: `Error: ${error.message}` })
+      } else {
+        setMessage({ type: 'success', text: 'Staff member updated successfully!' })
+        // Refresh the staff list
+        await fetchAllStaff()
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleReset = () => {
@@ -41,6 +161,9 @@ export default function EditStaffPage() {
       activation: "",
       permission: ""
     })
+    setSelectedStaffId("")
+    setSelectedStaffTable(null)
+    setMessage(null)
   }
 
   return (
@@ -57,6 +180,40 @@ export default function EditStaffPage() {
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8">
         Edit Staff
       </h1>
+
+      {/* Staff Selection Dropdown */}
+      <div className="w-full max-w-2xl mb-6 p-6 bg-purple-50 rounded-lg border border-purple-200">
+        <Label htmlFor="staffSelect" className="text-lg font-semibold mb-3 block text-purple-700">
+          Select Staff Member
+        </Label>
+        <Select value={selectedStaffId} onValueChange={handleStaffSelection}>
+          <SelectTrigger id="staffSelect" className="w-full bg-white">
+            <SelectValue placeholder="Choose a staff member to edit..." />
+          </SelectTrigger>
+          <SelectContent>
+            {allStaff.length === 0 ? (
+              <SelectItem value="none" disabled>No staff members found</SelectItem>
+            ) : (
+              allStaff.map((staff) => (
+                <SelectItem key={staff.id} value={staff.id}>
+                  {staff.full_name} ({staff.position})
+                </SelectItem>
+              ))
+            )}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* Message Display */}
+      {message && (
+        <div className={`w-full max-w-2xl mb-6 p-4 rounded-lg ${
+          message.type === 'success' 
+            ? 'bg-green-50 border border-green-200 text-green-800' 
+            : 'bg-red-50 border border-red-200 text-red-800'
+        }`}>
+          {message.text}
+        </div>
+      )}
 
       <div className="w-full max-w-2xl mx-auto">
         <Card className="p-6 md:p-8">
@@ -195,8 +352,12 @@ export default function EditStaffPage() {
 
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button type="submit" className="flex-1">
-                Submit
+              <Button 
+                type="submit" 
+                className="flex-1"
+                disabled={loading || !selectedStaffId}
+              >
+                {loading ? 'Updating...' : 'Submit'}
               </Button>
               <Button type="button" variant="outline" onClick={handleReset} className="flex-1">
                 Reset
