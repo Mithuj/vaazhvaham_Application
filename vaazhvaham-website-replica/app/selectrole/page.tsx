@@ -7,11 +7,14 @@ import { Card } from "@/components/ui/card"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { supabase } from "@/lib/supabase"
 
 export default function SelectRolePage() {
   const [selectedRole, setSelectedRole] = useState<string>("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>("")
   const router = useRouter()
 
   const roles = [
@@ -20,25 +23,81 @@ export default function SelectRolePage() {
     { id: "student", label: "Management" },
   ]
 
-  const handleSignIn = () => {
+  const handleSignIn = async () => {
+    // Reset error message
+    setError("")
+    
+    // Validate inputs
     if (!selectedRole || !email || !password) {
-      alert("Please select a role and enter email and password")
+      setError("Please select a role and enter email and password")
       return
     }
 
-    // Navigate based on selected role
-    switch (selectedRole) {
-      case "administrator":
-        router.push("/admindashboard")
-        break
-      case "lecturer":
-        router.push("/staffdashboard")
-        break
-      case "student":
-        router.push("/managementdashboard")
-        break
-      default:
-        break
+    setLoading(true)
+
+    try {
+      // Determine which table to check based on selected role
+      let tableName = ""
+      let dashboardRoute = ""
+      
+      switch (selectedRole) {
+        case "administrator":
+          tableName = "admin"
+          dashboardRoute = "/admindashboard"
+          break
+        case "lecturer":
+          tableName = "staff"
+          dashboardRoute = "/staffdashboard"
+          break
+        case "student":
+          tableName = "managementstaff"
+          dashboardRoute = "/managementdashboard"
+          break
+        default:
+          setError("Invalid role selected")
+          setLoading(false)
+          return
+      }
+
+      // Query Supabase to check if email and password match
+      // Using the supabase client which automatically uses .env variables
+      const { data, error: queryError } = await supabase
+        .from(tableName)
+        .select('*')
+        .eq('email_address', email)
+        .eq('password', password)
+        .single()
+
+      if (queryError || !data) {
+        // No matching record found
+        setError("Invalid email or password. Please try again.")
+        setLoading(false)
+        return
+      }
+
+      // Check if account is activated (for staff and managementstaff tables)
+      if (tableName !== "admin" && data.activation !== "Activate") {
+        setError("Your account is not activated. Please contact the administrator.")
+        setLoading(false)
+        return
+      }
+
+      // Authentication successful!
+      console.log("Login successful:", data)
+      
+      // Store user info in sessionStorage for later use
+      sessionStorage.setItem('userRole', selectedRole)
+      sessionStorage.setItem('userEmail', email)
+      sessionStorage.setItem('userName', data.full_name)
+      
+      // Navigate to the appropriate dashboard
+      router.push(dashboardRoute)
+      
+    } catch (error) {
+      console.error("Login error:", error)
+      setError("An unexpected error occurred. Please try again.")
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -58,6 +117,13 @@ export default function SelectRolePage() {
         <div className="text-center">
           <h1 className="text-3xl font-bold text-foreground">Select Your Role</h1>
         </div>
+
+        {/* Error Message */}
+        {error && (
+          <div className="p-4 rounded-lg bg-red-100 border border-red-300 text-red-800 text-sm">
+            {error}
+          </div>
+        )}
 
         {/* Role Selection */}
         <div className="grid grid-cols-3 gap-3">
@@ -112,9 +178,10 @@ export default function SelectRolePage() {
         {/* Sign In Button */}
         <Button
           onClick={handleSignIn}
+          disabled={loading}
           className="w-full h-14 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all"
         >
-          SIGN IN
+          {loading ? "SIGNING IN..." : "SIGN IN"}
         </Button>
       </Card>
     </div>
