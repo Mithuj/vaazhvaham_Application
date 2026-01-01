@@ -127,7 +127,7 @@ export default function GalleryPage() {
 
       {/* Image Modal */}
       <Dialog open={selectedImage !== null} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-5xl p-0">
+        <DialogContent className="max-w-[95vw] max-h-[95vh] p-0 bg-black/95 border-0">
           <DialogTitle className="sr-only">
             {selectedImage !== null 
               ? galleryImages.find((img) => img.id === selectedImage)?.alt 
@@ -135,17 +135,17 @@ export default function GalleryPage() {
           </DialogTitle>
           <button
             onClick={() => setSelectedImage(null)}
-            className="absolute right-4 top-4 z-50 rounded-full bg-background/80 p-2 backdrop-blur-sm transition-colors hover:bg-background"
+            className="absolute right-4 top-4 z-50 rounded-full bg-white/20 p-2 backdrop-blur-sm transition-colors hover:bg-white/30"
             aria-label="Close"
           >
-            <X className="h-6 w-6" />
+            <X className="h-6 w-6 text-white" />
           </button>
           {selectedImage !== null && (
-            <div className="relative aspect-video w-full">
+            <div className="relative w-full h-[90vh] flex items-center justify-center p-4">
               <img
                 src={galleryImages.find((img) => img.id === selectedImage)?.src || "/placeholder.svg"}
                 alt={galleryImages.find((img) => img.id === selectedImage)?.alt}
-                className="h-full w-full object-contain"
+                className="max-w-full max-h-full object-contain"
               />
             </div>
           )}
