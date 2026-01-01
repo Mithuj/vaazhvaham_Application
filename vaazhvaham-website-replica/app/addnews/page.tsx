@@ -43,10 +43,10 @@ export default function AddNewsPage() {
     // Fetch user ID from the correct table using supabase client (which uses .env)
     const fetchUserId = async () => {
       let tableName = ''
-      // Handle both 'admin' and 'administrator' role values
+      // Handle all role variations from selectrole page
       if (role === 'admin' || role === 'administrator') tableName = 'admin'
-      else if (role === 'staff') tableName = 'staff'
-      else if (role === 'management') tableName = 'managementstaff'
+      else if (role === 'staff' || role === 'lecturer') tableName = 'staff'
+      else if (role === 'management' || role === 'student') tableName = 'managementstaff'
       
       // Validate tableName is not empty
       if (!tableName) {
@@ -133,8 +133,8 @@ export default function AddNewsPage() {
 
       // Determine person type for tracking
       let personType = 'admin'
-      if (userRole === 'staff') personType = 'staff'
-      else if (userRole === 'management') personType = 'managementstaff'
+      if (userRole === 'staff' || userRole === 'lecturer') personType = 'staff'
+      else if (userRole === 'management' || userRole === 'student') personType = 'managementstaff'
       else if (userRole === 'admin' || userRole === 'administrator') personType = 'admin'
 
       // Insert news data into newsmanagement table using supabase client
