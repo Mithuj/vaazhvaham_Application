@@ -31,6 +31,9 @@ export default function EditNewsPage() {
   const [selectedNewsId, setSelectedNewsId] = useState<string>("")
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
+  const [userRole, setUserRole] = useState<string | null>(null)
+  const [hasPermission, setHasPermission] = useState(false)
   
   const [formData, setFormData] = useState({
     headingEnglish: "",
@@ -44,15 +47,32 @@ export default function EditNewsPage() {
 
   // Fetch all news on component mount using supabase client (which uses .env)
   useEffect(() => {
-    fetchAllNews()
+    const storedUserId = sessionStorage.getItem('userId')
+    const storedRole = sessionStorage.getItem('userRole')
+    const storedPermission = sessionStorage.getItem('userPermission')
+    
+    setUserId(storedUserId)
+    setUserRole(storedRole)
+    setHasPermission(storedPermission === 'Yes')
+    
+    fetchAllNews(storedUserId, storedRole, storedPermission === 'Yes')
   }, [])
 
-  const fetchAllNews = async () => {
+  const fetchAllNews = async (currentUserId: string | null, currentRole: string | null, permission: boolean) => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('newsmanagement')
         .select('*')
         .order('created_at', { ascending: false })
+
+      // Filter based on role and permission
+      // Admin or users with permission can see all news
+      // Staff and Management without permission can only see their own news
+      if (currentRole !== 'administrator' && currentRole !== 'admin' && !permission && currentUserId) {
+        query = query.eq('person_id', currentUserId)
+      }
+
+      const { data, error } = await query
 
       if (error) {
         console.error('Error fetching news:', error)
@@ -136,7 +156,7 @@ export default function EditNewsPage() {
         setMessage({ type: 'error', text: `Error: ${error.message}` })
       } else {
         setMessage({ type: 'success', text: 'News updated successfully!' })
-        await fetchAllNews()
+        await fetchAllNews(userId, userRole, hasPermission)
       }
     } catch (error) {
       console.error('Unexpected error:', error)

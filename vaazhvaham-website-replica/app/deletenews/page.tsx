@@ -24,18 +24,49 @@ export default function DeleteNewsPage() {
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+  const [userId, setUserId] = useState<string | null>(null)
+  const [userRole, setUserRole] = useState<string | null>(null)
+  const [hasPermission, setHasPermission] = useState(false)
 
   // Fetch all news on component mount using supabase client (which uses .env)
   useEffect(() => {
-    fetchAllNews()
+    const storedUserId = sessionStorage.getItem('userId')
+    const storedRole = sessionStorage.getItem('userRole')
+    const storedPermission = sessionStorage.getItem('userPermission')
+    
+    setUserId(storedUserId)
+    setUserRole(storedRole)
+    setHasPermission(storedPermission === 'Yes')
+    
+    fetchAllNews(storedUserId, storedRole, storedPermission === 'Yes')
   }, [])
 
-  const fetchAllNews = async () => {
+  const fetchAllNews = async (currentUserId: string | null, currentRole: string | null, permission: boolean) => {
     try {
-      const { data, error } = await supabase
+      let query = supabase
         .from('newsmanagement')
-        .select('id, news_heading_english, news_gallery_code')
+        .select('id, news_heading_english, news_gallery_code, person_id')
         .order('created_at', { ascending: false })
+
+      // Filter based on role and permission
+      // Admin or users with permission can delete all news
+      // Staff CANNOT delete (no delete option for staff)
+      // Management without permission can only delete their own news
+      if (currentRole === 'lecturer' || currentRole === 'staff') {
+        if (!permission) {
+          // Staff without permission cannot delete - show empty list
+          setAllNews([])
+          setMessage({ type: 'error', text: 'You do not have permission to delete news. Contact admin for access.' })
+          return
+        }
+        // Staff with permission can delete all news (no filter needed)
+      } else if ((currentRole === 'student' || currentRole === 'management') && !permission && currentUserId) {
+        // Management without permission can only delete their own news
+        query = query.eq('person_id', currentUserId)
+      }
+      // Admin or users with permission see all news (no filter)
+
+      const { data, error } = await query
 
       if (error) {
         console.error('Error fetching news:', error)
@@ -108,7 +139,7 @@ export default function DeleteNewsPage() {
       setSelectedNewsId("")
       setSelectedNews(null)
       setConfirmDelete(false)
-      await fetchAllNews()
+      await fetchAllNews(userId, userRole, hasPermission)
     } catch (error) {
       console.error('Unexpected error:', error)
       setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })

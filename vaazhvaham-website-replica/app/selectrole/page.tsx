@@ -89,6 +89,14 @@ export default function SelectRolePage() {
       sessionStorage.setItem('userRole', selectedRole)
       sessionStorage.setItem('userEmail', email)
       sessionStorage.setItem('userName', data.full_name)
+      sessionStorage.setItem('userId', data.id)
+      
+      // Store permission status for staff and managementstaff
+      if (tableName !== 'admin') {
+        sessionStorage.setItem('userPermission', data.give_permission || 'No')
+      } else {
+        sessionStorage.setItem('userPermission', 'Yes') // Admin always has full permission
+      }
       
       // Navigate to the appropriate dashboard
       router.push(dashboardRoute)
