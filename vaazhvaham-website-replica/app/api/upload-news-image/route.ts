@@ -23,11 +23,11 @@ export async function POST(request: NextRequest) {
     const originalName = file.name.replace(/\s+/g, '_') // Replace spaces with underscores
     const filename = `news_${timestamp}_${originalName}`
 
-    // Define path to public folder
-    const publicPath = join(process.cwd(), 'public', filename)
+    // Define path to images-to-show folder inside app directory
+    const imagePath = join(process.cwd(), 'app', 'images-to-show', filename)
 
-    // Write file to public folder
-    await writeFile(publicPath, buffer)
+    // Write file to images-to-show folder
+    await writeFile(imagePath, buffer)
 
     return NextResponse.json(
       { 

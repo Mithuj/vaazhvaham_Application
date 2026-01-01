@@ -14,8 +14,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Define path to the file in public folder
-    const filePath = join(process.cwd(), 'public', filename)
+    // Define path to the file in images-to-show folder
+    const filePath = join(process.cwd(), 'app', 'images-to-show', filename)
 
     // Check if file exists before trying to delete
     if (!existsSync(filePath)) {
