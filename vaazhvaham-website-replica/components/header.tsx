@@ -4,13 +4,25 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { ChevronDown, Globe } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 export function Header() {
   const [language, setLanguage] = useState<"en" | "ta">("en")
 
+  // Load language from sessionStorage on mount
+  useEffect(() => {
+    const storedLanguage = sessionStorage.getItem('language')
+    if (storedLanguage === 'ta' || storedLanguage === 'en') {
+      setLanguage(storedLanguage)
+    }
+  }, [])
+
   const toggleLanguage = () => {
-    setLanguage(language === "en" ? "ta" : "en")
+    const newLanguage = language === "en" ? "ta" : "en"
+    setLanguage(newLanguage)
+    sessionStorage.setItem('language', newLanguage)
+    // Trigger a storage event for other components
+    window.dispatchEvent(new Event('storage'))
   }
 
   return (
@@ -68,7 +80,7 @@ export function Header() {
               </DropdownMenu>
 
               <Link href="/gallery" className="text-sm font-medium transition-colors hover:text-primary">
-                {language === "en" ? "Gallery" : "படத்தொகுப்பு"}
+                {language === "en" ? "Gallery" : "நிகழ்வுத் தொகுப்பு"}
               </Link>
 
               <Link href="/contact" className="text-sm font-medium transition-colors hover:text-primary">
