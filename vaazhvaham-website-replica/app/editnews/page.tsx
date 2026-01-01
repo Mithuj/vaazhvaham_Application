@@ -7,26 +7,143 @@ import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { useState } from "react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useState, useEffect } from "react"
+import { supabase } from "@/lib/supabase"
+
+type NewsItem = {
+  id: string
+  news_heading_english: string
+  news_heading_tamil: string
+  news_gallery_code: string
+  date: string
+  news_english_paragraph: string
+  news_tamil_paragraph: string
+  person_id: string
+  person_type: string
+}
 
 export default function EditNewsPage() {
   const router = useRouter()
   const [showHeadingForm, setShowHeadingForm] = useState(false)
   const [showParagraphForm, setShowParagraphForm] = useState(false)
+  const [allNews, setAllNews] = useState<NewsItem[]>([])
+  const [selectedNewsId, setSelectedNewsId] = useState<string>("")
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+  
   const [formData, setFormData] = useState({
-    chooseHeading: "",
     headingEnglish: "",
     headingTamil: "",
     image: null as File | null,
+    existingImage: "",
     newsDate: "",
     paragraphEnglish: "",
     paragraphTamil: ""
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Fetch all news on component mount using supabase client (which uses .env)
+  useEffect(() => {
+    fetchAllNews()
+  }, [])
+
+  const fetchAllNews = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('newsmanagement')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) {
+        console.error('Error fetching news:', error)
+        setMessage({ type: 'error', text: 'Failed to load news items' })
+      } else if (data) {
+        setAllNews(data)
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error)
+    }
+  }
+
+  const handleNewsSelection = (newsId: string) => {
+    setSelectedNewsId(newsId)
+    setMessage(null)
+    
+    const selectedNews = allNews.find(n => n.id === newsId)
+    
+    if (selectedNews) {
+      setFormData({
+        headingEnglish: selectedNews.news_heading_english,
+        headingTamil: selectedNews.news_heading_tamil,
+        image: null,
+        existingImage: selectedNews.news_gallery_code,
+        newsDate: selectedNews.date,
+        paragraphEnglish: selectedNews.news_english_paragraph,
+        paragraphTamil: selectedNews.news_tamil_paragraph
+      })
+      setShowHeadingForm(true)
+      setShowParagraphForm(true)
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("News updated:", formData)
-    // Add your submit logic here
+    setLoading(true)
+    setMessage(null)
+
+    if (!selectedNewsId) {
+      setMessage({ type: 'error', text: 'Please select a news item first' })
+      setLoading(false)
+      return
+    }
+
+    try {
+      let imageFileName = formData.existingImage
+
+      // If new image is uploaded, save it to public folder
+      if (formData.image) {
+        const formDataToSend = new FormData()
+        formDataToSend.append('image', formData.image)
+        
+        const uploadResponse = await fetch('/api/upload-news-image', {
+          method: 'POST',
+          body: formDataToSend
+        })
+        
+        if (!uploadResponse.ok) {
+          throw new Error('Failed to upload image')
+        }
+        
+        const uploadResult = await uploadResponse.json()
+        imageFileName = uploadResult.filename
+      }
+
+      // Update news data in newsmanagement table using supabase client
+      const { error } = await supabase
+        .from('newsmanagement')
+        .update({
+          news_heading_english: formData.headingEnglish,
+          news_heading_tamil: formData.headingTamil,
+          news_gallery_code: imageFileName,
+          date: formData.newsDate,
+          news_english_paragraph: formData.paragraphEnglish,
+          news_tamil_paragraph: formData.paragraphTamil
+        })
+        .eq('id', selectedNewsId)
+
+      if (error) {
+        console.error('Database error:', error)
+        setMessage({ type: 'error', text: `Error: ${error.message}` })
+      } else {
+        setMessage({ type: 'success', text: 'News updated successfully!' })
+        await fetchAllNews()
+      }
+    } catch (error) {
+      console.error('Unexpected error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred. Please try again.' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,23 +167,41 @@ export default function EditNewsPage() {
         Edit News
       </h1>
 
+      {/* Message Display */}
+      {message && (
+        <div className={`w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto mb-6 p-4 rounded-lg ${
+          message.type === 'success' 
+            ? 'bg-green-50 border border-green-200 text-green-800' 
+            : 'bg-red-50 border border-red-200 text-red-800'
+        }`}>
+          {message.text}
+        </div>
+      )}
+
       <div className="w-full max-w-sm sm:max-w-md md:max-w-2xl lg:max-w-3xl xl:max-w-4xl mx-auto">
         <Card className="p-4 sm:p-6 md:p-8 lg:p-10 shadow-lg">
           <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-7 md:space-y-8">
             {/* Choose the News Heading */}
-            <div className="space-y-2 md:space-y-3">
-              <Label htmlFor="chooseHeading" className="text-sm sm:text-base font-medium">
+            <div className="space-y-2 md:space-y-3 p-4 bg-purple-50 rounded-lg border border-purple-200">
+              <Label htmlFor="chooseHeading" className="text-sm sm:text-base font-semibold text-purple-700">
                 Choose the News Heading
               </Label>
-              <Input
-                id="chooseHeading"
-                type="text"
-                placeholder="Enter or search for the news heading"
-                value={formData.chooseHeading}
-                onChange={(e) => setFormData({ ...formData, chooseHeading: e.target.value })}
-                required
-                className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
-              />
+              <Select value={selectedNewsId} onValueChange={handleNewsSelection}>
+                <SelectTrigger id="chooseHeading" className="h-10 sm:h-11 md:h-12 text-sm sm:text-base bg-white">
+                  <SelectValue placeholder="Select a news item to edit..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {allNews.length === 0 ? (
+                    <SelectItem value="none" disabled>No news items found</SelectItem>
+                  ) : (
+                    allNews.map((news) => (
+                      <SelectItem key={news.id} value={news.id}>
+                        {news.news_heading_english}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
             </div>
 
             {/* Add Heading of News Button */}
@@ -94,7 +229,6 @@ export default function EditNewsPage() {
                       placeholder="Enter news heading in English"
                       value={formData.headingEnglish}
                       onChange={(e) => setFormData({ ...formData, headingEnglish: e.target.value })}
-                      required
                       className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                     />
                   </div>
@@ -109,7 +243,6 @@ export default function EditNewsPage() {
                       placeholder="Enter news heading in Tamil"
                       value={formData.headingTamil}
                       onChange={(e) => setFormData({ ...formData, headingTamil: e.target.value })}
-                      required
                       className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
                     />
                   </div>
@@ -120,19 +253,23 @@ export default function EditNewsPage() {
             {/* Add Image from Gallery */}
             <div className="space-y-2 md:space-y-3">
               <Label htmlFor="image" className="text-sm sm:text-base font-medium">
-                Add Image from Gallery
+                Change Image (optional)
               </Label>
+              {formData.existingImage && (
+                <p className="text-xs sm:text-sm text-muted-foreground mb-2">
+                  Current: {formData.existingImage}
+                </p>
+              )}
               <Input
                 id="image"
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
-                required
                 className="h-10 sm:h-11 md:h-12 text-sm sm:text-base cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-primary-foreground hover:file:bg-primary/90"
               />
               {formData.image && (
                 <p className="text-xs sm:text-sm text-muted-foreground mt-2 px-1">
-                  ✓ Selected: {formData.image.name}
+                  ✓ New image selected: {formData.image.name}
                 </p>
               )}
             </div>
@@ -147,7 +284,6 @@ export default function EditNewsPage() {
                 type="date"
                 value={formData.newsDate}
                 onChange={(e) => setFormData({ ...formData, newsDate: e.target.value })}
-                required
                 className="h-10 sm:h-11 md:h-12 text-sm sm:text-base"
               />
             </div>
@@ -176,7 +312,6 @@ export default function EditNewsPage() {
                       placeholder="Enter news paragraph in English"
                       value={formData.paragraphEnglish}
                       onChange={(e) => setFormData({ ...formData, paragraphEnglish: e.target.value })}
-                      required
                       rows={5}
                       className="text-sm sm:text-base min-h-[120px] sm:min-h-[140px] md:min-h-[160px] resize-y"
                     />
@@ -191,7 +326,6 @@ export default function EditNewsPage() {
                       placeholder="Enter news paragraph in Tamil"
                       value={formData.paragraphTamil}
                       onChange={(e) => setFormData({ ...formData, paragraphTamil: e.target.value })}
-                      required
                       rows={5}
                       className="text-sm sm:text-base min-h-[120px] sm:min-h-[140px] md:min-h-[160px] resize-y"
                     />
@@ -205,8 +339,9 @@ export default function EditNewsPage() {
               <Button 
                 type="submit" 
                 className="w-full h-11 sm:h-12 md:h-14 text-sm sm:text-base md:text-lg font-semibold shadow-md hover:shadow-lg transition-all"
+                disabled={loading || !selectedNewsId}
               >
-                Update News
+                {loading ? 'Updating...' : 'Update News'}
               </Button>
             </div>
           </form>
