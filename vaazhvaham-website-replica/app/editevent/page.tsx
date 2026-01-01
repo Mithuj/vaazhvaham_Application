@@ -120,7 +120,7 @@ export default function EditEventPage() {
     try {
       let imageFileName = formData.existingImage
 
-      // If new image is uploaded, save it
+      // If new image is uploaded, save it and delete the old one
       if (formData.image) {
         const formDataToSend = new FormData()
         formDataToSend.append('image', formData.image)
@@ -136,6 +136,19 @@ export default function EditEventPage() {
         
         const uploadResult = await uploadResponse.json()
         imageFileName = uploadResult.filename
+        
+        // Delete the old image file if it exists and is different from the new one
+        if (formData.existingImage && formData.existingImage.trim() !== '' && formData.existingImage !== imageFileName) {
+          try {
+            await fetch('/api/delete-file', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ filename: formData.existingImage.trim() })
+            })
+          } catch (deleteError) {
+            console.warn('Failed to delete old image:', deleteError)
+          }
+        }
       }
 
       // Update event data in eventmanagement table using supabase client

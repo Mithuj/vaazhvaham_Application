@@ -117,7 +117,7 @@ export default function EditPublicationPage() {
       let imageFileName = formData.existingImage
       let pdfFileName = formData.existingPdf
 
-      // If new files are uploaded, save them
+      // If new files are uploaded, save them and delete the old ones
       if (formData.image || formData.pdf) {
         const formDataToSend = new FormData()
         if (formData.image) formDataToSend.append('image', formData.image)
@@ -133,8 +133,42 @@ export default function EditPublicationPage() {
         }
         
         const uploadResult = await uploadResponse.json()
-        if (uploadResult.imageFilename) imageFileName = uploadResult.imageFilename
-        if (uploadResult.pdfFilename) pdfFileName = uploadResult.pdfFilename
+        
+        // Handle image update and deletion
+        if (uploadResult.imageFilename) {
+          const newImageFilename = uploadResult.imageFilename
+          // Delete old image if it exists and is different from new one
+          if (formData.existingImage && formData.existingImage.trim() !== '' && formData.existingImage !== newImageFilename) {
+            try {
+              await fetch('/api/delete-file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: formData.existingImage.trim() })
+              })
+            } catch (deleteError) {
+              console.warn('Failed to delete old image:', deleteError)
+            }
+          }
+          imageFileName = newImageFilename
+        }
+        
+        // Handle PDF update and deletion
+        if (uploadResult.pdfFilename) {
+          const newPdfFilename = uploadResult.pdfFilename
+          // Delete old PDF if it exists and is different from new one
+          if (formData.existingPdf && formData.existingPdf.trim() !== '' && formData.existingPdf !== newPdfFilename) {
+            try {
+              await fetch('/api/delete-file', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ filename: formData.existingPdf.trim() })
+              })
+            } catch (deleteError) {
+              console.warn('Failed to delete old PDF:', deleteError)
+            }
+          }
+          pdfFileName = newPdfFilename
+        }
       }
 
       // Update publication data in publicationmanagement table using supabase client
