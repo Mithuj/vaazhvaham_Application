@@ -118,13 +118,13 @@ export default function DeleteNewsPage() {
         return
       }
 
-      // Delete image file from public folder if it exists
-      if (selectedNews.news_gallery_code) {
+      // Delete image file from images-to-show folder if it exists
+      if (selectedNews.news_gallery_code && selectedNews.news_gallery_code.trim() !== '') {
         try {
           const deleteResponse = await fetch('/api/delete-news-image', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ filename: selectedNews.news_gallery_code })
+            body: JSON.stringify({ filename: selectedNews.news_gallery_code.trim() })
           })
 
           if (!deleteResponse.ok) {

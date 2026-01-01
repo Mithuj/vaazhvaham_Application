@@ -164,6 +164,79 @@ export type Database = {
           person_type?: string
         }
       }
+      eventmanagement: {
+        Row: {
+          id: string
+          created_at: string
+          event_heading_english: string
+          event_heading_tamil: string
+          event_english_paragraph: string
+          event_tamil_paragraph: string
+          date: string
+          event_gallery_code: string
+          person_id: string
+          person_type: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          event_heading_english: string
+          event_heading_tamil: string
+          event_english_paragraph: string
+          event_tamil_paragraph: string
+          date: string
+          event_gallery_code: string
+          person_id: string
+          person_type: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          event_heading_english?: string
+          event_heading_tamil?: string
+          event_english_paragraph?: string
+          event_tamil_paragraph?: string
+          date?: string
+          event_gallery_code?: string
+          person_id?: string
+          person_type?: string
+        }
+      }
+      publicationmanagement: {
+        Row: {
+          id: string
+          created_at: string
+          publication_gallery_code: string
+          year: number
+          publication_heading_tamil: string
+          publication_heading_english: string
+          person_id: string
+          person_type: string
+          pdf_code: string
+        }
+        Insert: {
+          id?: string
+          created_at?: string
+          publication_gallery_code: string
+          year: number
+          publication_heading_tamil: string
+          publication_heading_english: string
+          person_id: string
+          person_type: string
+          pdf_code: string
+        }
+        Update: {
+          id?: string
+          created_at?: string
+          publication_gallery_code?: string
+          year?: number
+          publication_heading_tamil?: string
+          publication_heading_english?: string
+          person_id?: string
+          person_type?: string
+          pdf_code?: string
+        }
+      }
     }
   }
 }
