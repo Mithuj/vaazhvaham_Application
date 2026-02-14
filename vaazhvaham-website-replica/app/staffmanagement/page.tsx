@@ -1,0 +1,51 @@
+"use client"
+
+import Link from "next/link"
+import { ArrowLeft, UserPlus, UserCog } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { Footer } from "@/components/footer"
+
+export default function StaffManagementPage() {
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 md:p-8 relative">
+      {/* Back Button */}
+      <Link
+        href="/admindashboard"
+        className="absolute top-4 left-4 md:top-6 md:left-6 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+      >
+        <ArrowLeft className="h-5 w-5" />
+        <span className="hidden sm:inline">Back</span>
+      </Link>
+
+      <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12">
+        Staff Management
+      </h1>
+
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
+          {/* Add Staff */}
+          <Card className="p-4">
+            <Link href="/addstaff" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <UserPlus className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Add Staff</span>
+              </Button>
+            </Link>
+          </Card>
+          
+          {/* Edit Staff */}
+          <Card className="p-4">
+            <Link href="/editstaff" className="block">
+              <Button className="w-full h-20 md:h-24 flex flex-col gap-2 text-base md:text-lg">
+                <UserCog className="h-6 w-6 md:h-8 md:w-8" />
+                <span>Edit Staff</span>
+              </Button>
+            </Link>
+          </Card>
+        </div>
+      </div>
+      <div className="mt-32 md:mt-40 lg:mt-48"><Footer /></div>
+    </div>
+  )
+}
