@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { ArrowLeft, Plus, Edit, Trash2 } from "lucide-react"
+import { ArrowLeft, Plus, Edit, Trash2, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Footer } from "@/components/footer"
@@ -16,6 +16,15 @@ export default function ManagementPublicationManagementPage() {
       >
         <ArrowLeft className="h-5 w-5" />
         <span className="hidden sm:inline">Back</span>
+      </Link>
+
+      {/* Go to Dashboard Button */}
+      <Link
+        href="/managementdashboard"
+        className="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+      >
+        <LayoutDashboard className="h-5 w-5" />
+        <span className="hidden sm:inline">Dashboard</span>
       </Link>
 
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8 md:mb-12">

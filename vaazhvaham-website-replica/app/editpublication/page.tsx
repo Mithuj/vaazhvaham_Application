@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { ArrowLeft, Plus } from "lucide-react"
+import { ArrowLeft, Plus, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -32,6 +32,15 @@ export default function EditPublicationPage() {
   const [userId, setUserId] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<string | null>(null)
   const [hasPermission, setHasPermission] = useState(false)
+
+  // Get dashboard URL based on role
+  const getDashboardUrl = () => {
+    const role = sessionStorage.getItem('userRole')
+    if (role === 'admin' || role === 'administrator') return '/admindashboard'
+    if (role === 'staff' || role === 'lecturer') return '/staffdashboard'
+    if (role === 'management' || role === 'student') return '/managementdashboard'
+    return '/admindashboard'
+  }
   
   const [formData, setFormData] = useState({
     headingEnglish: "",
@@ -231,6 +240,15 @@ export default function EditPublicationPage() {
       >
         <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
         <span className="text-sm sm:text-base hidden sm:inline">Back</span>
+      </button>
+
+      {/* Go to Dashboard Button */}
+      <button
+        onClick={() => router.push(getDashboardUrl())}
+        className="absolute top-4 right-3 sm:top-6 sm:right-6 md:top-8 md:right-8 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors z-10 cursor-pointer"
+      >
+        <LayoutDashboard className="h-4 w-4 sm:h-5 sm:w-5" />
+        <span className="text-sm sm:text-base hidden sm:inline">Dashboard</span>
       </button>
 
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 mt-12 sm:mt-14 md:mt-16 px-4">

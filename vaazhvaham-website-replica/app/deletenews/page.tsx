@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
@@ -28,6 +28,15 @@ export default function DeleteNewsPage() {
   const [userId, setUserId] = useState<string | null>(null)
   const [userRole, setUserRole] = useState<string | null>(null)
   const [hasPermission, setHasPermission] = useState(false)
+
+  // Get dashboard URL based on role
+  const getDashboardUrl = () => {
+    const role = sessionStorage.getItem('userRole')
+    if (role === 'admin' || role === 'administrator') return '/admindashboard'
+    if (role === 'staff' || role === 'lecturer') return '/staffdashboard'
+    if (role === 'management' || role === 'student') return '/managementdashboard'
+    return '/admindashboard'
+  }
 
   // Fetch all news on component mount using supabase client (which uses .env)
   useEffect(() => {
@@ -153,6 +162,15 @@ export default function DeleteNewsPage() {
         <span className="text-sm sm:text-base hidden sm:inline">Back</span>
       </button>
 
+      {/* Go to Dashboard Button */}
+      <button
+        onClick={() => router.push(getDashboardUrl())}
+        className="absolute top-4 right-3 sm:top-6 sm:right-6 md:top-8 md:right-8 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors z-10 cursor-pointer"
+      >
+        <LayoutDashboard className="h-4 w-4 sm:h-5 sm:w-5" />
+        <span className="text-sm sm:text-base hidden sm:inline">Dashboard</span>
+      </button>
+
       <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-6 sm:mb-8 md:mb-10 lg:mb-12 px-4">
         Delete News
       </h1>
@@ -178,7 +196,7 @@ export default function DeleteNewsPage() {
               </Label>
               <Select value={selectedNewsId} onValueChange={handleNewsSelection}>
                 <SelectTrigger id="newsHeading" className="h-10 sm:h-11 md:h-12 text-sm sm:text-base">
-                  <SelectValue placeholder="Select a news item to delete..." />
+                  <SelectValue placeholder="Select a news item to delete..." className="truncate" />
                 </SelectTrigger>
                 <SelectContent>
                   {allNews.length === 0 ? (
@@ -186,7 +204,9 @@ export default function DeleteNewsPage() {
                   ) : (
                     allNews.map((news) => (
                       <SelectItem key={news.id} value={news.id}>
-                        {news.news_heading_english}
+                        <span className="block truncate max-w-[300px] sm:max-w-[400px] md:max-w-[500px]" title={news.news_heading_english}>
+                          {news.news_heading_english}
+                        </span>
                       </SelectItem>
                     ))
                   )}

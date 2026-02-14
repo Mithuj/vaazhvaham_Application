@@ -1,7 +1,8 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, LayoutDashboard } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -27,11 +28,21 @@ type StaffMember = {
 }
 
 export default function EditStaffPage() {
+  const router = useRouter()
   const [allStaff, setAllStaff] = useState<StaffMember[]>([])
   const [selectedStaffId, setSelectedStaffId] = useState<string>("")
   const [selectedStaffTable, setSelectedStaffTable] = useState<'staff' | 'managementstaff' | null>(null)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+
+  // Get dashboard URL based on role
+  const getDashboardUrl = () => {
+    const role = sessionStorage.getItem('userRole')
+    if (role === 'admin' || role === 'administrator') return '/admindashboard'
+    if (role === 'staff' || role === 'lecturer') return '/staffdashboard'
+    if (role === 'management' || role === 'student') return '/managementdashboard'
+    return '/admindashboard'
+  }
   
   const [formData, setFormData] = useState({
     fullName: "",
@@ -230,6 +241,15 @@ export default function EditStaffPage() {
         <ArrowLeft className="h-5 w-5" />
         <span className="hidden sm:inline">Back</span>
       </Link>
+
+      {/* Go to Dashboard Button */}
+      <button
+        onClick={() => router.push(getDashboardUrl())}
+        className="absolute top-4 right-4 md:top-6 md:right-6 flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors cursor-pointer"
+      >
+        <LayoutDashboard className="h-5 w-5" />
+        <span className="hidden sm:inline">Dashboard</span>
+      </button>
 
       <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-8">
         Edit Staff
